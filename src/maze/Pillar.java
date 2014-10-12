@@ -11,12 +11,12 @@ import java.util.Map;
  *  the cost of this node which is the sum of b and e,
  *  the number of planks left at this node,
  *  the x and y coordinates of this node in the maze grid,
- *  whether the node is the end, and a map of neighbors with
+ *  whether the node is the beginning or end, and a map of neighbors with
  *  neighbors as key and a connected Boolean as the value.
  *
  *  @author Shaun Howard
  */
-public class Pillar {
+public class Pillar implements Comparable<Pillar>{
 
     /* p, previously visited node */
     Pillar p = null;
@@ -35,6 +35,9 @@ public class Pillar {
 
     /* x, y, coordinates of this node in a grid */
     int x = 0, y = 0;
+
+    /* begin, boolean to tell if this node is the beginning node */
+    boolean begin = false;
 
     /* end, boolean to tell if this node is the end node */
     boolean end = false;
@@ -183,6 +186,24 @@ public class Pillar {
     }
 
     /**
+     * Returns whether this pillar is the begin pillar.
+     *
+     * @return whether this pillar is the begin pillar
+     */
+    public boolean isBegin() {
+        return begin;
+    }
+
+    /**
+     * Set whether this pillar is the beginning pillar.
+     *
+     * @param begin - whether this pillar is the begin pillar
+     */
+    public void setBegin(boolean begin) {
+        this.begin = begin;
+    }
+
+    /**
      * Returns whether this pillar is the end pillar.
      *
      * @return whether this pillar is the end pillar
@@ -226,5 +247,38 @@ public class Pillar {
      */
     void addNeighbor(Pillar neighbor, boolean isConnected) {
         this.neighbors.put(neighbor, isConnected);
+    }
+
+    /**
+     * Compares pillars by their cost. Utilizes
+     * the Java compareTo() for Floats.
+     *
+     * @param pillar - the pillar to compare to this pillar
+     * @return the comparison of the pillars by cost
+     */
+    @Override
+    final public int compareTo(Pillar pillar) {
+        Float thisCost = new Float(this.getCost());
+        Float pillarCost = new Float(pillar.getCost());
+        return thisCost.compareTo(pillarCost);
+    }
+
+    /**
+     * Determines whether two pillars are equal based on their costs,
+     * x, and y coordinates.
+     *
+     * @param o - the object to compare with this pillar
+     * @return whether the input object is equivalent to this pillar
+     */
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Pillar) {
+            Pillar p = (Pillar)o;
+            if (p.getCost() == this.getCost()
+                    && p.getX() == this.getX() && p.getY() == this.getY()){
+                return true;
+            }
+        }
+        return false;
     }
 }

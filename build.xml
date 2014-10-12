@@ -68,7 +68,7 @@
   
   
   
-  <property name="compiler.args.pillarmaze" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  <property name="compiler.args.pillarmaze" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
   
   <property name="pillarmaze.output.dir" value="${module.pillarmaze.basedir}/out/production/PillarMaze"/>
   <property name="pillarmaze.testoutput.dir" value="${module.pillarmaze.basedir}/out/test/PillarMaze"/>

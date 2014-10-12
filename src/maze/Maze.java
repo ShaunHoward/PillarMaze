@@ -1,5 +1,11 @@
 package maze;
 
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * A maze is a grid of pillar nodes that may be linked by planks.
  * The maze is constructed by incrementally adding nodes to specific
@@ -14,4 +20,36 @@ package maze;
  * @author Shaun Howard
  */
 public class Maze {
+
+    int size = 0;
+    Pillar begin = null;
+    Pillar end = null;
+    Set<Pillar> pillars = new HashSet<>();
+
+    /**
+     * Constructs an empty maze of the given size.
+     *
+     * @param size - the size of the maze to construct
+     */
+    public Maze(int size) {
+        this.size = size;
+    }
+
+    /**
+     * Adds the given pillar to the set of pillars.
+     *
+     * @param pillar - the pillar to add to the set
+     */
+    void addPillar(Pillar pillar) {
+        pillars.add(pillar);
+        if (pillar.isBegin()) {
+            begin = pillar;
+        } else if (pillar.isEnd()) {
+            end = pillar;
+        }
+    }
+
+
+
+
 }
