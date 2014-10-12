@@ -1,3 +1,5 @@
+package maze;
+
 /**
  * Created by shaun on 10/12/14.
  */

@@ -1,3 +1,5 @@
+package maze;
+
 /**
  *  A node represents a pillar in a pillar grid.
  *  The node consists of the previously visited node p,

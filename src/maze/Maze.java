@@ -1,3 +1,5 @@
+package maze;
+
 /**
  * A maze is a grid of pillar nodes that may be linked by planks.
  * The maze is constructed by incrementally adding nodes to specific
