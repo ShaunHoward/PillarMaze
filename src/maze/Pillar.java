@@ -56,79 +56,174 @@ public class Pillar {
         this.y = y;
     }
 
-
+    /**
+     * Gets the previously visited pillar.
+     *
+     * @return the previously visited pillar
+     */
     Pillar getPrevious() {
         return p;
     }
 
+    /**
+     * Sets the previously visited pillar.
+     *
+     * @param p - the previously visited pillar
+     */
     void setPrevious(Pillar p) {
         this.p = p;
     }
 
+    /**
+     * Gets the distance from the beginning pillar.
+     *
+     * @return the distance from the beginning pillar
+     */
     float getDistanceFromBegin() {
         return b;
     }
 
+    /**
+     * Sets the distance from the beginning pillar.
+     *
+     * @param b - the distance from the beginning pillar
+     */
     void setDistanceFromBegin(float b) {
         this.b = b;
     }
 
+    /**
+     * Gets the heuristic distance to the end pillar.
+     *
+     * @return the heuristic distance to the end pillar
+     */
     float getHeuristic() {
         return e;
     }
 
+    /**
+     * Sets the heuristic distance to the end pillar.
+     *
+     * @param e - the heuristic distance to the end pillar
+     */
     void setHeuristic(float e) {
         this.e = e;
     }
 
+    /**
+     * Gets the cost of this pillar.
+     *
+     * @return the cost of this pillar
+     */
     float getCost() {
         return c;
     }
 
+    /**
+     * Sets the cost of this pillar.
+     *
+     * @param c - the cost of this pillar
+     */
     void setCost(float c) {
         this.c = c;
     }
 
+    /**
+     * Gets the planks left at this pillar.
+     *
+     * @return the planks left at this pillar
+     */
     int getPlanksLeft() {
         return n;
     }
 
+    /**
+     * Sets the planks left at this pillar.
+     *
+     * @param n - the planks left at this pillar
+     */
     void setPlanksLeft(int n) {
         this.n = n;
     }
 
+    /**
+     * Gets the x-coordinate of this pillar.
+     *
+     * @return the x-coordinate of this pillar
+     */
     int getX() {
         return x;
     }
 
+    /**
+     * Sets the x-coordinate of this pillar in a grid.
+     *
+     * @param x - the x-coordinate on the grid
+     */
     void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * Gets the y-coordinate of this pillar.
+     *
+     * @return the y-coordinate of this pillar
+     */
     int getY() {
         return y;
     }
 
+    /**
+     * Sets the y-coordinate of this pillar in a grid.
+     *
+     * @param y - the y-coordinate on the grid
+     */
     void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * Returns whether this pillar is the end pillar.
+     *
+     * @return whether this pillar is the end pillar
+     */
     boolean isEnd() {
         return end;
     }
 
+    /**
+     * Set whether this pillar is the ending pillar.
+     *
+     * @param end - whether this pillar is the end pillar
+     */
     void setEnd(boolean end) {
         this.end = end;
     }
 
+    /**
+     * Gets the neighbor pillars of this pillar.
+     *
+     * @return the neighbor pillars of this pillar
+     */
     Map<Pillar, Boolean> getNeighbors() {
         return neighbors;
     }
 
+    /**
+     * Set the neighbor pillars of this pillar.
+     *
+     * @param neighbors - the neighbor pillars of this pillar
+     */
     void setNeighbors(Map<Pillar, Boolean> neighbors) {
         this.neighbors = neighbors;
     }
 
+    /**
+     * Adds a neighbor pillar to this pillar.
+     *
+     * @param neighbor - the neighbor pillar to add
+     * @param isConnected - whether the neighbor is connected
+     */
     void addNeighbor(Pillar neighbor, boolean isConnected) {
         this.neighbors.put(neighbor, isConnected);
     }
