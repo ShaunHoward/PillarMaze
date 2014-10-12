@@ -1,0 +1,134 @@
+PillarMaze Pseudocode
+Author: Shaun M. Howard (smh150@case.edu)
+
+A node represents a pillar in a pillar grid. The node consists of the previously visited node p, the distance from the beginning node b, the heuristic distance to the ending node e, the cost of this node which is the sum of b and e, the number of planks left at this node, the x and y coordinates of this node in the maze grid, whether the node is the end, and a map of neighbors with neighbors as key and a connected Boolean as the value.  
+ 
+Node { 
+    p, previously visited node 
+ 
+    b, distance from the beginning node 
+ 
+    e, heuristic distance to ending node 
+ 
+    c, cost of this node 
+ 
+    n, number of planks left at this node 
+ 
+    x, y, coordinates of this node in a grid 
+ 
+    end, boolean to tell if this node is the end node 
+ 
+    nMap, map of neighbor nodes with key as neighbor and connected boolean as value 
+} 
+A maze is a grid of pillar nodes that may be linked by planks. The maze is constructed by incrementally adding nodes to specific x,y coordinates which are not already occupied and linking them by putting a node as a key into another nodes map of neighbors and setting its value to true, otherwise the value should be false and these nodes are simply unconnected neighbors. The end node, the exit of the maze, will be signified by a Boolean “end” which should be set to true, otherwise, the node is a step to the end and so this value is false. The other values of the nodes should initially be set to 0 or null.          
+P* finds and returns the shortest path through a maze of planked pillars, with the possibility that one extra plank will be placed to connect two unconnected neighbor pillars if a shorter path can be found. When a maze of size 0 is given, nil will be returned. When a maze of size 1 is given, the shortest path list with only the beginning node will be returned. Otherwise, the algorithm will traverse through the pillars of the square maze grid with planks, determining the shortest path between pillars connected by planks, while possibly connecting unconnected pillars with the given limit of planks, which is 1, in order to find a shorter path. 
+ 
+//P* algorithm 
+call input graph 'maze' 
+call input length 'size' 
+if the size of maze is not equal to size 
+     throw an invalid size exception 
+end if 
+initialize the set of expanded nodes 'E' 
+initialize a priority queue of nodes 'N' sorted in non-decreasing order by cost, c,  
+     the sum of heuristic and number of times moved 
+if maze size is greater than 0 
+     add the beginning node of maze to E 
+     add the beginning node to N with c=0, n=1, e=distance to end from beginning 
+end if 
+while N is not empty 
+     extract lowest cost node 'v' from N 
+     if v is the end node of maze 
+          return shortest path to v 
+     end if 
+     find the connected neighbor nodes of v 
+     for each connected node 'c' 
+          if c does not exist in E 
+               c.p . v 
+               c.b . v.b + 1 
+               c.e . distance to end from c 
+               c.n . v.n 
+               c.c . c.b + c.e 
+               add c to E 
+               add c to N 
+          end if 
+     end 
+ 
+     if v.n > 0 
+         find the unconnected neighbor nodes of v 
+         for each unconnected node u 
+               if u does not exist in E 
+                    u.p . v 
+                    u.b . v.b + 1 
+                    u.e . distance to end from u 
+                    u.n . v.n - 1 
+                    u.c . u.b + u.e 
+                    add u to E 
+                    add u to N 
+               end if 
+         end 
+     end if 
+end 
+return nil 
+ 
+// shortest path to end 
+initialize the path list 
+initialize a node called 'curr' with end 
+add curr to path list 
+while curr.p is not nil 
+     curr . curr.p 
+     add curr to front of path list 
+end 
+return path list 
+ 
+// distance to end from node 
+call the current node 'c' 
+find the end node of the grid 'e' 
+add the absolute values of (e.x - c.x) and (e.y - c.y) and call this 'manhattan' 
+return the manhattan distance 
+ 
+// connected neighbors of node 
+call the current node 'c' 
+initialize a list of connected neighbors 
+for each node in c.nMap 
+     if node has true value in nMap 
+          add node to list of connected neighbors 
+     end if 
+end 
+return list of connected neighbors 
+ 
+// unconnected neighbors of node 
+call the current node 'c' 
+initialize a list of unconnected neighbors 
+for each node in c.nMap 
+     if node has false value in nMap 
+          add node to list of unconnected neighbors 
+     end if 
+end 
+return list of unconnected neighbors 
+ 
+Correctness: 
+ 
+Loop invariant: When a node is added to the queue, it is on the shortest path to that node from the start node, with possible ties in shortest paths. 
+ 
+Claim: For any node n where n is optimally k steps away from the start node, when n is extracted from the sorted queue of nodes, it is on a path of length k from the start node. 
+ 
+Basis step: At a node i that is a neighbor of and connected to the start node, the shortest path to i is of length 1. We know this is true because once the algorithm finds the connected neighbor nodes of the start node, it will add those nodes to the queue with a distance of the sum of the start node's distance plus 1. Since the start node's distance is 0, the node i is simply a distance of 1 away from the start node and thus the shortest path to i is of length 1. 
+ 
+Inductive step: At a node j that is a neighbor of and connected to the lowest cost node currently visited, v, the length of the shortest path to j is the shortest path to v plus 1. We know this is true because once the algorithm finds the connected neighbor nodes of v, they are added to the queue with a distance from start that is the shortest path to v from start plus 1. Since the shortest path to v from start is the shortest path to v, then by induction, the shortest path to j must be the shortest path to v plus 1 because j is a neighbor of v.    
+ 
+Termination: The shortest path to the end node will be returned as a list of nodes from the start node to the end node. If m is the length of the shortest path from the start to the end node, then the length of the list of nodes from start to end nodes is m. 
+ 
+Since the end node is some finite number, m, steps away from the start, and P* at a length k is true by induction, the algorithm is correct.  
+ 
+Runtime: If we analyze the P* algorithm, we can see that the time complexity of P* depends on the accuracy of the heuristic like so: 
+ 
+|h(x)-h*(x)| = O(logh*(x)) where h* is the optimal heuristic 
+ 
+From this we determine that the error in h will not grow quicker than the log of the optimal heuristic. 
+ 
+The worst case performance of P* is proportional to the number of edges, or planks, in the maze like so: 
+ 
+O(|E|) where E is the number of edges between nodes 
+ 
+E can vary based on the insertion of a plank, but that will only be a constant factor, so E will increase by a constant factor, p, based on the number of possibilities to insert a plank between two nodes.
