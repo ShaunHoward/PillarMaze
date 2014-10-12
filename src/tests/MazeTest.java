@@ -1,7 +1,9 @@
 package tests;
 
 /**
- * Created by shaun on 10/12/14.
+ * Tests the pillar maze class.
+ *
+ * @author Shaun Howard
  */
 public class MazeTest {
 }
