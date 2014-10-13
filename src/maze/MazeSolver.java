@@ -15,7 +15,7 @@ public class MazeSolver {
      * Unlike A*, P* considers all pillars with extra planks between
      * neighbors, given that the number of planks at the current step
      * are greater than 0.
-     *
+     * <p/>
      * Once P* begins to follow a shortest path, it takes that path
      * to the end of the maze.
      *
@@ -23,11 +23,12 @@ public class MazeSolver {
      * @param size - the expected size of the maze
      */
     static List<Pillar> pStar(Maze maze, int size) throws Exception {
-        /* if the size of maze is not equal to size */
-        if (maze.size != size) {
-            /* throw an invalid size exception */
-            throw new Exception("Maze size was unequal to expected size.");
-        }
+
+        /* throw exception with maze size is not expected size. */
+        MazeUtilities.throwExceptionWhenDifferent(maze.size, size);
+
+        /* the end of the maze. */
+        Pillar end = maze.getEnd();
 
         /* initialize the set of expanded nodes 'E' */
         Set<Pillar> E = new HashSet<>();
@@ -38,21 +39,8 @@ public class MazeSolver {
         */
         PriorityQueue<Pillar> N = new PriorityQueue<>();
 
-        /* if maze size is greater than 0 */
-        if (size > 0) {
-
-            /* The beginning pillar of the maze. */
-            Pillar pillar = maze.getBegin();
-
-           /* add the beginning node of maze to E */
-            E.add(pillar);
-
-           /* add the beginning node to N with c=0, n=1, e=distance to end from beginning */
-            pillar.setCost(0);
-            pillar.setPlanksLeft(1);
-            pillar.setHeuristic(distanceToEnd(pillar));
-            N.add(pillar);
-        }
+        /* initialize the P* search through the maze. */
+        initializeSearch(maze, E, N);
 
         /* while N is not empty */
         while (!N.isEmpty()) {
@@ -61,17 +49,21 @@ public class MazeSolver {
             Pillar v = N.poll();
 
             /* if v is the end node of maze */
-            if (v.equals(maze.getEnd())) {
+            if (v.equals(end)) {
+
                 /* return shortest path to v */
                 return shortestPath(v);
             }
 
             /* find the connected neighbor nodes of v */
             List<Pillar> connectedNeighbors = v.getNeighborList(true);
+
             /* for each connected node 'c' */
             for (Pillar c : connectedNeighbors) {
+
                 /* if c does not exist in E */
                 if (!E.contains(c)) {
+
                     /* c.p = v */
                     c.setPrevious(v);
 
@@ -79,7 +71,7 @@ public class MazeSolver {
                     c.setDistanceFromBegin(v.getDistanceFromBegin() + 1);
 
                     /* c.e = distance to end from c */
-                    c.setHeuristic(distanceToEnd(c));
+                    c.setHeuristic(distanceToEnd(c, end));
 
                     /* c.n = v.n */
                     c.setPlanksLeft(v.getPlanksLeft());
@@ -94,50 +86,145 @@ public class MazeSolver {
                     N.add(c);
                 }
             }
-        }
- /*
-        if v.n > 0
-        find the unconnected neighbor nodes of v
-        for each unconnected node u
-        if u does not exist in E
-        u.p . v
-        u.b . v.b + 1
-        u.e . distance to end from u
-        u.n . v.n - 1
-        u.c . u.b + u.e
-        add u to E
-        add u to N
-        end if
-        end
-        end if
-        end
-        return nil */
-                return null;
-    }
 
-    private static List<Pillar> shortestPath(Pillar v) {
+            /* attempt to link unconnected neighbors of v if at least one plank at v. */
+            attemptLinks(v, end, E, N);
+        }
+
+        /* return nil */
         return null;
     }
 
-    private static float distanceToEnd(Pillar pillar) {
-        return 0;
+    /**
+     * Initializes the P* search algorithm by getting the beginning pillar of the maze
+     * and adding it to the set of explored pillars, then adding it the the priority queue
+     * of new pillars and initializing it's values.
+     *
+     * @param maze
+     * @param E
+     * @param N
+     */
+    static void initializeSearch(Maze maze, Set<Pillar> E, PriorityQueue<Pillar> N) {
+
+        /* if maze size is greater than 0 */
+        if (maze.size > 0) {
+
+            /* The beginning pillar of the maze. */
+            Pillar pillar = maze.getBegin();
+
+           /* add the beginning node of maze to E */
+            E.add(pillar);
+
+           /* add the beginning node to N with c=0, n=1, e=distance to end from beginning */
+            pillar.setCost(0);
+            pillar.setPlanksLeft(1);
+            pillar.setHeuristic(distanceToEnd(pillar, maze.getEnd()));
+            N.add(pillar);
+        }
+
     }
 
-    /*
-    // shortest path to end
-    initialize the path list
-    initialize a node called 'curr' with end
-    add curr to path list
-    while curr.p is not nil
-    curr . curr.p
-    add curr to front of path list
-            end
-    return path list
+    /**
+     * Attempts to link the currently visited pillar, v, with unconnected pillars
+     * that are its neighbors. These newly connected pillars are added to the set
+     * of explored pillars, E, and the priority queue of new pillars, N.
+     *
+     * @param v - the currently visited pillar
+     * @param end - the end pillar of the maze
+     * @param E - the set of explored pillars
+     * @param N - the priority queue of new pillars
+     */
+    static void attemptLinks(Pillar v, Pillar end, Set<Pillar> E, PriorityQueue<Pillar> N) {
+        /* if v.n > 0 */
+        if (v.getPlanksLeft() > 0) {
 
-    // distance to end from node
-    call the current node 'c'
-    find the end node of the grid 'e'
-    add the absolute values of (e.x - c.x) and (e.y - c.y) and call this 'manhattan'
-            return the manhattan distance
-            */
+                /* find the unconnected neighbor nodes of v */
+            List<Pillar> unconnectedNeighbors = v.getNeighborList(false);
+
+                /* for each unconnected node u */
+            for (Pillar u : unconnectedNeighbors) {
+
+                    /* if u does not exist in E */
+                if (!E.contains(u)) {
+                        /* u.p = v */
+                    u.setPrevious(v);
+
+                        /* u.b = v.b + 1 */
+                    u.setDistanceFromBegin(v.getDistanceFromBegin() + 1);
+
+                        /* u.e = distance to end from u */
+                    u.setHeuristic(distanceToEnd(u, end));
+
+                        /* u.n = v.n - 1 */
+                    u.setPlanksLeft(v.getPlanksLeft() - 1);
+
+                        /* u.c = u.b + u.e */
+                    u.setCost(u.getDistanceFromBegin() + u.getHeuristic());
+
+                        /* add u to E */
+                    E.add(u);
+
+                        /* add u to N */
+                    N.add(u);
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the shortest path to the given end pillar
+     * from the beginning pillar of the maze.
+     *
+     * @param end - the pillar to get the shortest path to
+     *            from the beginning pillar
+     * @return the list of pillars from the beginning of the
+     * maze to the end of the maze
+     */
+    static List<Pillar> shortestPath(Pillar end) {
+        /* initialize the path list */
+        List<Pillar> shortestPath = new ArrayList<>();
+
+        /* initialize a node called 'curr' with end */
+        Pillar curr = end;
+
+        /* add curr to path list */
+        shortestPath.add(curr);
+
+        /* while curr.p is not nil */
+        while (!MazeUtilities.isNull(curr.getPrevious())) {
+
+            /* curr = curr.p */
+            curr = curr.getPrevious();
+
+            /* add curr to front of path list */
+            shortestPath.add(0, curr);
+        }
+
+        /* return path list */
+        return shortestPath;
+    }
+
+    /**
+     * Determines and returns the distance from the
+     * given pillar to the end of the maze.
+     *
+     * @param current - the pillar to get the distance to
+     *                from the end of the maze
+     * @param end     - the end pillar of the maze
+     * @return the distance from the given pillar to the
+     * end of the maze
+     */
+    static float distanceToEnd(Pillar current, Pillar end) {
+        /* call the current node 'c' */
+        Pillar c = current;
+
+        /* find the end node of the grid 'e' */
+        Pillar e = end;
+
+        /* add the absolute values of (e.x - c.x) and (e.y - c.y) and call this 'manhattan' */
+        int manhattan = Math.abs(e.getX() - c.getX()) + Math.abs(e.getY() - c.getY());
+
+        /* return the manhattan distance */
+        return manhattan;
+    }
 }

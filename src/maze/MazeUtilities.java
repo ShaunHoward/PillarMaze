@@ -35,4 +35,22 @@ public class MazeUtilities {
         }
         return false;
     }
+
+    /**
+     * Checks if the actual size is different from the expected size.
+     * If they differ, an exception is thrown with a message that the
+     * maze size was unequal to the expected size.
+     *
+     * @param actual - the actual maze size
+     * @param expected - the expected maze size
+     * @throws Exception - thrown when the actual maze size is unequal to
+     * the expected maze size
+     */
+    public static void throwExceptionWhenDifferent(int actual, int expected) throws Exception {
+        /* if the size of maze is not equal to size */
+        if (actual != expected) {
+            /* throw an invalid size exception */
+            throw new Exception("Maze size was unequal to expected size.");
+        }
+    }
 }

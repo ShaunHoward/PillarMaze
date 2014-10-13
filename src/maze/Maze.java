@@ -18,11 +18,22 @@ import java.util.Map;
  */
 public class Maze {
 
+    /* the length of the maze by rows. */
     int length = 0;
+
+    /* the width of the maze by columns. */
     int width = 0;
+
+    /* the size of the maze by length times width. */
     int size = 0;
+
+    /* the beginning pillar of the maze. */
     Pillar begin = null;
+
+    /* the ending pillar of the maze. */
     Pillar end = null;
+
+    /* a map of pillars keyed by their positions. */
     Map<Position, Pillar> pillars = new HashMap<>();
 
     /**
@@ -31,7 +42,7 @@ public class Maze {
      * parameters.
      *
      * @param length - the length of the maze to construct
-     * @param width - the width of the maze to construct
+     * @param width  - the width of the maze to construct
      */
     public Maze(int length, int width) {
         this.length = length;
@@ -41,21 +52,47 @@ public class Maze {
         setNeighbors();
     }
 
-    void constructPillars(){
+    /**
+     * Constructs the pillars for the maze
+     * across the grid of size length x width.
+     * Each pillar has it's own grid coordinates
+     * as if it was on an inverted 2D graph.
+     *
+     * The origin of the maze is at the bottom right
+     * corner while the farthest distance is at the
+     * top left corner.
+     *
+     * From right to left, x coordinate increases.
+     * From bottom to top, y coordinate increases.
+     */
+    void constructPillars() {
         Pillar pillar;
-        for (int i = 0; i < length; i++){
-            for (int j = 0; j < width; j++){
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
                 pillar = new Pillar(j, i);
-                pillars.put(new Position(j,i), pillar);
+                pillars.put(new Position(j, i), pillar);
             }
         }
     }
 
-    void setNeighbors(){
+    /**
+     * Sets the neighbor pillars of each pillar in the
+     * maze. At this point, the maze does not determine
+     * if the pillars are connected by planks. This will
+     * be set by the user with the linkPillars() method.
+     */
+    void setNeighbors() {
         Pillar pillar;
-        for (int i = 0; i < length; i++){
-            for (int j = 0; j < width; j++){
-                pillar = pillars.get(new Position(j,i));
+
+        /*
+         * Find all the neighbors of a selected pillar
+         * at the given position in the maze and add
+         * them to the map of neighbors for that pillar.
+         * Null neighbors will not be added to the map.
+         */
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                pillar = pillars.get(new Position(j, i));
                 pillar.addNeighbor(getBelowPillar(pillar), false);
                 pillar.addNeighbor(getAbovePillar(pillar), false);
                 pillar.addNeighbor(getLeftPillar(pillar), false);
@@ -64,49 +101,76 @@ public class Maze {
         }
     }
 
-    Pillar getBelowPillar(Pillar pillar){
+    /**
+     * Gets the pillar below the given pillar, otherwise
+     * returns null.
+     *
+     * @param pillar - the pillar to find the pillar below
+     * @return the pillar below the given pillar
+     */
+    Pillar getBelowPillar(Pillar pillar) {
         int x = pillar.getX();
         int y = pillar.getY();
         if (y > 0) {
-           return pillars.get(new Position(x, y-1));
+            return pillars.get(new Position(x, y - 1));
         }
         return null;
     }
 
-    Pillar getAbovePillar(Pillar pillar){
+    /**
+     * Gets the pillar above the given pillar, otherwise
+     * returns null.
+     *
+     * @param pillar - the pillar to find the pillar above
+     * @return the pillar above the given pillar
+     */
+    Pillar getAbovePillar(Pillar pillar) {
         int x = pillar.getX();
         int y = pillar.getY();
         if (y < width) {
-            return pillars.get(new Position(x, y+1));
+            return pillars.get(new Position(x, y + 1));
         }
         return null;
     }
 
-
-    Pillar getRightPillar(Pillar pillar){
+    /**
+     * Gets the pillar right of the given pillar, otherwise
+     * returns null.
+     *
+     * @param pillar - the pillar to find the pillar right of
+     * @return the pillar right of the given pillar
+     */
+    Pillar getRightPillar(Pillar pillar) {
         int x = pillar.getX();
         int y = pillar.getY();
         if (x > 0) {
-            return pillars.get(new Position(x-1, y));
+            return pillars.get(new Position(x - 1, y));
         }
         return null;
     }
 
-    Pillar getLeftPillar(Pillar pillar){
+    /**
+     * Gets the pillar left of the given pillar, otherwise
+     * returns null.
+     *
+     * @param pillar - the pillar to find the pillar left of
+     * @return the pillar left of the given pillar
+     */
+    Pillar getLeftPillar(Pillar pillar) {
         int x = pillar.getX();
         int y = pillar.getY();
         if (x < length) {
-            return pillars.get(new Position(x+1, y));
+            return pillars.get(new Position(x + 1, y));
         }
         return null;
     }
 
     /**
      * Links the start pillar to the end pillar
-     * with a unidirectional link.
+     * with a unidirectional plank.
      *
-     * @param startPos - the position of the pillar to start the link
-     * @param endPos - the position of the pillar to end the link
+     * @param startPos - the position of the pillar to start the plank
+     * @param endPos   - the position of the pillar to end the plank
      * @throws Exception - when the pillars at either position are null
      */
     void linkPillars(Position startPos, Position endPos) throws Exception {
@@ -116,7 +180,7 @@ public class Maze {
         MazeUtilities.throwExceptionWhenNull(start, end);
 
         Map<Pillar, Boolean> neighbors = start.getNeighbors();
-        if (neighbors.containsKey(end)){
+        if (neighbors.containsKey(end)) {
             neighbors.put(end, true);
         }
     }
@@ -140,7 +204,7 @@ public class Maze {
      *
      * @return the beginning pillar of this maze
      */
-    Pillar getBegin(){
+    Pillar getBegin() {
         return begin;
     }
 
@@ -149,7 +213,7 @@ public class Maze {
      *
      * @return the ending pillar of this maze
      */
-    Pillar getEnd(){
+    Pillar getEnd() {
         return end;
     }
 
@@ -158,45 +222,59 @@ public class Maze {
      *
      * @return the pillars of this maze
      */
-    Map<Position, Pillar> getPillars(){
+    Map<Position, Pillar> getPillars() {
         return pillars;
     }
 
-    class Position{
+    /**
+     * Holds the position of pillars in the maze.
+     */
+    class Position {
+
+        /* the x-coordinate of a pillar. */
         int x = 0;
+
+        /* the y-coordinate of a pillar. */
         int y = 0;
 
-        Position(int x, int y){
+        /**
+         * Constructs a position from x and y coordinates.
+         *
+         * @param x - the x-coordinate in the maze
+         * @param y - the y-coordinate in the maze
+         */
+        Position(int x, int y) {
             this.x = x;
             this.y = y;
         }
 
-        void setCoordinates(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-
-        int getX(){
-            return x;
-        }
-
-        int getY(){
-            return y;
-        }
-
+        /**
+         * Compares this position with another object.
+         * The two positions are equal if their
+         * x and y coordinates are equivalent.
+         *
+         * @param o - the object to compare with this position
+         * @return whether the two objects are equivalent
+         */
         @Override
-        public boolean equals(Object o){
-            if (!MazeUtilities.isNull(o) && o instanceof Position){
-                Position p = (Position)o;
-                if (this.x == p.x && this.y == p.y){
+        public boolean equals(Object o) {
+            if (!MazeUtilities.isNull(o) && o instanceof Position) {
+                Position p = (Position) o;
+                if (this.x == p.x && this.y == p.y) {
                     return true;
                 }
             }
             return false;
         }
 
+        /**
+         * The hash code for this position is based on
+         * x and y coordinates.
+         *
+         * @return the hash code for this position
+         */
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return (x * 23 + y * 55) % 23;
         }
     }
