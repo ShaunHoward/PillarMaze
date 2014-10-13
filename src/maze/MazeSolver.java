@@ -3,7 +3,9 @@ package maze;
 import java.util.*;
 
 /**
- * Created by shaun on 10/12/14.
+ * Solves the pillar maze with a P* (modified A*) algorithm.
+ *
+ * @author Shaun Howard
  */
 public class MazeSolver {
 
@@ -48,7 +50,7 @@ public class MazeSolver {
            /* add the beginning node to N with c=0, n=1, e=distance to end from beginning */
             pillar.setCost(0);
             pillar.setPlanksLeft(1);
-            pillar.setDistanceFromBegin(distanceToEnd(pillar));
+            pillar.setHeuristic(distanceToEnd(pillar));
             N.add(pillar);
         }
 
@@ -66,21 +68,34 @@ public class MazeSolver {
 
             /* find the connected neighbor nodes of v */
             List<Pillar> connectedNeighbors = v.getNeighborList(true);
-/*
-        for each connected node 'c'
-                if c does not exist in E
-        c.p . v
-        c.b . v.b + 1
-        c.e . distance to end from c
-        c.n . v.n
-        c.c . c.b + c.e
-        add c to E
-        add c to N
-        end if */
-        }
-/*
-        end
+            /* for each connected node 'c' */
+            for (Pillar c : connectedNeighbors) {
+                /* if c does not exist in E */
+                if (!E.contains(c)) {
+                    /* c.p = v */
+                    c.setPrevious(v);
 
+                    /* c.b = v.b + 1 */
+                    c.setDistanceFromBegin(v.getDistanceFromBegin() + 1);
+
+                    /* c.e = distance to end from c */
+                    c.setHeuristic(distanceToEnd(c));
+
+                    /* c.n = v.n */
+                    c.setPlanksLeft(v.getPlanksLeft());
+
+                    /* c.c = c.b + c.e */
+                    c.setCost(c.getDistanceFromBegin() + c.getHeuristic());
+
+                    /* add c to E */
+                    E.add(c);
+
+                    /* add c to N */
+                    N.add(c);
+                }
+            }
+        }
+ /*
         if v.n > 0
         find the unconnected neighbor nodes of v
         for each unconnected node u
@@ -97,6 +112,7 @@ public class MazeSolver {
         end if
         end
         return nil */
+                return null;
     }
 
     private static List<Pillar> shortestPath(Pillar v) {

@@ -1,9 +1,7 @@
 package maze;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A maze is a grid of pillar nodes that may be linked by planks.
