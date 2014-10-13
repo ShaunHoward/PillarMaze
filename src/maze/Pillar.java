@@ -240,7 +240,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the neighbor pillars of this pillar
      */
-    Map<Pillar, Boolean> getNeighbors() {
+    public Map<Pillar, Boolean> getNeighbors() {
         return neighbors;
     }
 
@@ -330,5 +330,16 @@ public class Pillar implements Comparable<Pillar> {
             }
         }
         return false;
+    }
+
+    /**
+     * Hash code for this pillar. Generated based on
+     * x, y coordinates and cost of this pillar.
+     *
+     * @return the hash code of this pillar
+     */
+    @Override
+    public int hashCode(){
+        return (x * 23 + y * 55 + (int)c * 3) % 23;
     }
 }

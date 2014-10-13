@@ -222,14 +222,52 @@ public class Maze {
      *
      * @return the pillars of this maze
      */
-    Map<Position, Pillar> getPillars() {
+    public Map<Position, Pillar> getPillars() {
         return pillars;
+    }
+
+    /**
+     * Gets the size of this maze.
+     *
+     * @return the size of this maze
+     */
+    public int size(){
+        return this.size;
+    }
+
+    /**
+     * Gets the length of the maze.
+     *
+     * @return the length of the maze
+     */
+    public int length(){
+        return this.length;
+    }
+
+    /**
+     * Gets the width of the maze.
+     *
+     * @return the width of the maze
+     */
+    public int width(){
+        return this.width;
+    }
+
+    /**
+     * Makes a new position in this maze.
+     *
+     * @param x - the x position
+     * @param y - the y position
+     * @return a new position in this maze
+     */
+    public static Position position(int x, int y){
+        return new Position(x, y);
     }
 
     /**
      * Holds the position of pillars in the maze.
      */
-    class Position {
+    public static class Position {
 
         /* the x-coordinate of a pillar. */
         int x = 0;
