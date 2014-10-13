@@ -254,6 +254,7 @@ public class Pillar implements Comparable<Pillar> {
      */
     List<Pillar> getNeighborList(boolean connected){
         List<Pillar> neighborList = new ArrayList<>();
+        System.out.println(this.getX() + "," + this.getY());
         for (Pillar neighbor : neighbors.keySet()){
             if (neighbors.get(neighbor).booleanValue() == connected){
                 neighborList.add(neighbor);

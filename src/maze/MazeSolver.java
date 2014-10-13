@@ -21,8 +21,10 @@ public class MazeSolver {
      *
      * @param maze - the maze to find the shortest path through
      * @param size - the expected size of the maze
+     * @throws Exception - thrown when the actual and expected maze sizes
+     * differ
      */
-    static List<Pillar> pStar(Maze maze, int size) throws Exception {
+    public static List<Pillar> pStar(Maze maze, int size) throws Exception {
 
         /* throw exception with maze size is not expected size. */
         MazeUtilities.throwExceptionWhenDifferent(maze.size, size);

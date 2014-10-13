@@ -173,7 +173,7 @@ public class Maze {
      * @param endPos   - the position of the pillar to end the plank
      * @throws Exception - when the pillars at either position are null
      */
-    void linkPillars(Position startPos, Position endPos) throws Exception {
+    public void linkPillars(Position startPos, Position endPos) throws Exception {
         Pillar start = pillars.get(startPos);
         Pillar end = pillars.get(endPos);
 
@@ -204,8 +204,19 @@ public class Maze {
      *
      * @return the beginning pillar of this maze
      */
-    Pillar getBegin() {
+    public Pillar getBegin() {
         return begin;
+    }
+
+    /**
+     * Sets the beginning pillar of this maze.
+     *
+     * @param begin - the beginning position of this maze
+     */
+    public void setBegin(Position begin){
+        if (pillars.containsKey(begin)) {
+            this.begin = pillars.get(begin);
+        }
     }
 
     /**
@@ -213,8 +224,19 @@ public class Maze {
      *
      * @return the ending pillar of this maze
      */
-    Pillar getEnd() {
+    public Pillar getEnd() {
         return end;
+    }
+
+    /**
+     * Sets the ending pillar of this maze.
+     *
+     * @param end - the ending position of this maze
+     */
+    public void setEnd(Position end){
+        if (pillars.containsKey(end)) {
+            this.end = pillars.get(end);
+        }
     }
 
     /**
