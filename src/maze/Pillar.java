@@ -258,7 +258,7 @@ public class Pillar implements Comparable<Pillar> {
      * @param isConnected - whether the neighbor is connected
      */
     void addNeighbor(Pillar neighbor, boolean isConnected) {
-        if (neighbor != null) {
+        if (!MazeUtilities.isNull(neighbor)) {
             this.neighbors.put(neighbor, isConnected);
         }
     }
@@ -278,6 +278,22 @@ public class Pillar implements Comparable<Pillar> {
     }
 
     /**
+     * Determines whether two pillars are the same based on their costs,
+     * x, and y coordinates.
+     *
+     * @param pillar - the pillar to compare with this pillar
+     * @return whether the the pillars are the same
+     */
+    boolean samePillars(Pillar pillar){
+        if (this.getX() == pillar.getX()
+                && this.getY() == pillar.getY()
+                && this.getCost() == pillar.getCost()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Determines whether two pillars are equal based on their costs,
      * x, and y coordinates.
      *
@@ -286,11 +302,10 @@ public class Pillar implements Comparable<Pillar> {
      */
     @Override
     public boolean equals(Object o){
-        //check for null
-        if (o instanceof Pillar) {
+
+        if (!MazeUtilities.isNull(o) && o instanceof Pillar) {
             Pillar p = (Pillar)o;
-            if (p.getCost() == this.getCost()
-                    && p.getX() == this.getX() && p.getY() == this.getY()){
+            if (samePillars(p)){
                 return true;
             }
         }

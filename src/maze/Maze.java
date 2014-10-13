@@ -107,17 +107,21 @@ public class Maze {
      * Links the start pillar to the end pillar
      * with a unidirectional link.
      *
-     * @param start - the pillar to start the link
-     * @param end - the pillar to end the link
+     * @param startPos - the position of the pillar to start the link
+     * @param endPos - the position of the pillar to end the link
+     * @throws Exception - when the pillars at either position are null
      */
-    void linkPillars(Pillar start, Pillar end){
+    void linkPillars(Position startPos, Position endPos) throws Exception {
+        Pillar start = pillars.get(startPos);
+        Pillar end = pillars.get(endPos);
+
+        MazeUtilities.throwExceptionWhenNull(start, end);
+
         Map<Pillar, Boolean> neighbors = start.getNeighbors();
         if (neighbors.containsKey(end)){
             neighbors.put(end, true);
         }
     }
-
-
 
 //    /**
 //     * Adds the given pillar to the set of pillars.
@@ -184,8 +188,7 @@ public class Maze {
 
         @Override
         public boolean equals(Object o){
-            //check for null
-            if (o instanceof Position){
+            if (!MazeUtilities.isNull(o) && o instanceof Position){
                 Position p = (Position)o;
                 if (this.x == p.x && this.y == p.y){
                     return true;
@@ -196,7 +199,7 @@ public class Maze {
 
         @Override
         public int hashCode(){
-            return x * 23 + y * 23;
+            return (x * 23 + y * 55) % 23;
         }
     }
 
