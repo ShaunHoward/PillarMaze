@@ -25,7 +25,7 @@ public class Maze {
     int size = 0;
     Pillar begin = null;
     Pillar end = null;
-    Map<Pillar, Position> pillars = new HashMap<>();
+    Map<Position, Pillar> pillars = new HashMap<>();
 
     /**
      * Constructs an empty maze of the length and width
@@ -40,15 +40,67 @@ public class Maze {
         this.width = width;
         this.size = length * width;
         constructPillars();
+        setNeighbors();
     }
 
     void constructPillars(){
+        Pillar pillar;
         for (int i = 0; i < length; i++){
             for (int j = 0; j < width; j++){
-                Pillar pillar = new Pillar(j, i);
-                pillars.put(pillar, new Position(j,i));
+                pillar = new Pillar(j, i);
+                pillars.put(new Position(j,i), pillar);
             }
         }
+    }
+
+    void setNeighbors(){
+        Pillar pillar;
+        for (int i = 0; i < length; i++){
+            for (int j = 0; j < width; j++){
+                pillar = pillars.get(new Position(j,i));
+                pillar.addNeighbor(getBelowPillar(pillar), false);
+                pillar.addNeighbor(getAbovePillar(pillar), false);
+                pillar.addNeighbor(getLeftPillar(pillar), false);
+                pillar.addNeighbor(getRightPillar(pillar), false);
+            }
+        }
+    }
+
+    Pillar getBelowPillar(Pillar pillar){
+        int x = pillar.getX();
+        int y = pillar.getY();
+        if (y > 0) {
+           return pillars.get(new Position(x, y-1));
+        }
+        return null;
+    }
+
+    Pillar getAbovePillar(Pillar pillar){
+        int x = pillar.getX();
+        int y = pillar.getY();
+        if (y < width) {
+            return pillars.get(new Position(x, y+1));
+        }
+        return null;
+    }
+
+
+    Pillar getRightPillar(Pillar pillar){
+        int x = pillar.getX();
+        int y = pillar.getY();
+        if (x > 0) {
+            return pillars.get(new Position(x-1, y));
+        }
+        return null;
+    }
+
+    Pillar getLeftPillar(Pillar pillar){
+        int x = pillar.getX();
+        int y = pillar.getY();
+        if (x < length) {
+            return pillars.get(new Position(x+1, y));
+        }
+        return null;
     }
 
     /**
@@ -59,6 +111,10 @@ public class Maze {
      * @param end - the pillar to end the link
      */
     void linkPillars(Pillar start, Pillar end){
+        Map<Pillar, Boolean> neighbors = start.getNeighbors();
+        if (neighbors.containsKey(end)){
+            neighbors.put(end, true);
+        }
     }
 
 
@@ -100,7 +156,7 @@ public class Maze {
      *
      * @return the pillars of this maze
      */
-    Map<Pillar, Position> getPillars(){
+    Map<Position, Pillar> getPillars(){
         return pillars;
     }
 
@@ -124,6 +180,23 @@ public class Maze {
 
         int getY(){
             return y;
+        }
+
+        @Override
+        public boolean equals(Object o){
+            //check for null
+            if (o instanceof Position){
+                Position p = (Position)o;
+                if (this.x == p.x && this.y == p.y){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode(){
+            return x * 23 + y * 23;
         }
     }
 

@@ -16,7 +16,7 @@ import java.util.Map;
  *
  *  @author Shaun Howard
  */
-public class Pillar implements Comparable<Pillar>{
+public class Pillar implements Comparable<Pillar> {
 
     /* p, previously visited node */
     Pillar p = null;
@@ -58,6 +58,7 @@ public class Pillar implements Comparable<Pillar>{
         this.x = x;
         this.y = y;
     }
+
     /**
      * Constructs a pillar from its x and y coordinates.
      *
@@ -257,7 +258,9 @@ public class Pillar implements Comparable<Pillar>{
      * @param isConnected - whether the neighbor is connected
      */
     void addNeighbor(Pillar neighbor, boolean isConnected) {
-        this.neighbors.put(neighbor, isConnected);
+        if (neighbor != null) {
+            this.neighbors.put(neighbor, isConnected);
+        }
     }
 
     /**
@@ -283,6 +286,7 @@ public class Pillar implements Comparable<Pillar>{
      */
     @Override
     public boolean equals(Object o){
+        //check for null
         if (o instanceof Pillar) {
             Pillar p = (Pillar)o;
             if (p.getCost() == this.getCost()
