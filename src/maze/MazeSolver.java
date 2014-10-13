@@ -1,5 +1,7 @@
 package maze;
 
+import java.util.List;
+
 /**
  * Created by shaun on 10/12/14.
  */
@@ -68,24 +70,5 @@ public class MazeSolver {
     find the end node of the grid 'e'
     add the absolute values of (e.x - c.x) and (e.y - c.y) and call this 'manhattan'
             return the manhattan distance
-
-    // connected neighbors of node
-    call the current node 'c'
-    initialize a list of connected neighbors
-    for each node in c.nMap
-    if node has true value in nMap
-    add node to list of connected neighbors
-    end if
-    end
-    return list of connected neighbors
-
-    // unconnected neighbors of node
-    call the current node 'c'
-    initialize a list of unconnected neighbors
-    for each node in c.nMap
-    if node has false value in nMap
-    add node to list of unconnected neighbors
-    end if
-    end
-    return list of unconnected neighbors */
+            */
 }

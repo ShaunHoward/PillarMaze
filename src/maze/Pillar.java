@@ -1,6 +1,8 @@
 package maze;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -240,6 +242,24 @@ public class Pillar implements Comparable<Pillar> {
      */
     Map<Pillar, Boolean> getNeighbors() {
         return neighbors;
+    }
+
+    /**
+     * Gets a list of neighbors, which are either
+     * connected or disconnected as determined by the
+     * entered boolean value.
+     *
+     * @param connected - whether to get connected neighbors
+     * @return connected or disconnected neighbors of this pillar
+     */
+    List<Pillar> getNeighborList(boolean connected){
+        List<Pillar> neighborList = new ArrayList<>();
+        for (Pillar neighbor : neighbors.keySet()){
+            if (neighbors.get(neighbor).booleanValue() == connected){
+                neighborList.add(neighbor);
+            }
+        }
+        return neighborList;
     }
 
     /**
