@@ -58,6 +58,17 @@ public class Pillar implements Comparable<Pillar>{
         this.x = x;
         this.y = y;
     }
+    /**
+     * Constructs a pillar from its x and y coordinates.
+     *
+     * @param x - the x-coordinate on the grid
+     * @param y - the y-coordinate on the grid
+     */
+    public Pillar(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
 
     /**
      * Gets the previously visited pillar.
