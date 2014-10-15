@@ -102,9 +102,9 @@ public class MazeSolver {
      * and adding it to the set of explored pillars, then adding it the the priority queue
      * of new pillars and initializing it's values.
      *
-     * @param maze
-     * @param E
-     * @param N
+     * @param maze - the maze to search
+     * @param E - the set of explored pillars
+     * @param N - the priority queue of new pillars
      */
     static void initializeSearch(Maze maze, Set<Pillar> E, PriorityQueue<Pillar> N) {
 

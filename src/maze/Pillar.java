@@ -1,9 +1,6 @@
 package maze;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  A node represents a pillar in a pillar grid.
@@ -168,7 +165,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the x-coordinate of this pillar
      */
-    int getX() {
+    public int getX() {
         return x;
     }
 
@@ -186,7 +183,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the y-coordinate of this pillar
      */
-    int getY() {
+    public int getY() {
         return y;
     }
 
@@ -253,11 +250,14 @@ public class Pillar implements Comparable<Pillar> {
      * @return connected or disconnected neighbors of this pillar
      */
     List<Pillar> getNeighborList(boolean connected){
-        List<Pillar> neighborList = new ArrayList<>();
-        System.out.println(this.getX() + "," + this.getY());
-        for (Pillar neighbor : neighbors.keySet()){
-            if (neighbors.get(neighbor).booleanValue() == connected){
-                neighborList.add(neighbor);
+
+        List<Pillar> neighborList = new ArrayList<>(neighbors.keySet());
+        Iterator<Pillar> listItr = neighborList.iterator();
+        Pillar curr = null;
+        while (listItr.hasNext()){
+            curr = listItr.next();
+            if (neighbors.containsKey(curr) && neighbors.get(curr).booleanValue() != connected){
+                listItr.remove();
             }
         }
         return neighborList;
@@ -296,6 +296,15 @@ public class Pillar implements Comparable<Pillar> {
         Float thisCost = new Float(this.getCost());
         Float pillarCost = new Float(pillar.getCost());
         return thisCost.compareTo(pillarCost);
+    }
+
+    /**
+     * Gets the coordinates of this pillar.
+     *
+     * @return - the coordinates <x,y></x,y> of this pillar
+     */
+    public String getCoordinates(){
+        return "<" + getX() + ", " + getY() + ">";
     }
 
     /**

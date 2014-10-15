@@ -63,8 +63,119 @@ public class MazeSolverTest {
             largeMaze.setBegin(Maze.position(0, 0));
             largeMaze.setEnd(Maze.position(4, 4));
             shortestPath = MazeSolver.pStar(largeMaze, 25);
-//
-//            assertEquals(8, shortestPath.size());
+
+            assertEquals(9, shortestPath.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void traverseOnlyWithPlankMaze(){
+        try {
+            //link row 1
+            smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+            //link row 2
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+
+            //link row 3
+            smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
+            smallMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //set beginning and end
+            smallMaze.setBegin(Maze.position(0, 0));
+            smallMaze.setEnd(Maze.position(2, 2));
+            shortestPath = MazeSolver.pStar(smallMaze, 9);
+
+            assertEquals(5, shortestPath.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void impossibleTraversalMaze(){
+        try {
+            //link row 1
+            smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+            //link row 3
+            smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
+
+            //set beginning and end
+            smallMaze.setBegin(Maze.position(0, 0));
+            smallMaze.setEnd(Maze.position(2, 2));
+            shortestPath = MazeSolver.pStar(smallMaze, 9);
+
+            assertEquals(null, shortestPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void noBenefitFromPlankMaze(){
+        try {
+            //link row 1
+            smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            smallMaze.linkPillars(Maze.position(0, 0), Maze.position(0, 1));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+            //link row 2
+            smallMaze.linkPillars(Maze.position(0, 1), Maze.position(0,2));
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2,1));
+
+            //link row 3
+            smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
+            smallMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //set beginning and end
+            smallMaze.setBegin(Maze.position(0, 0));
+            smallMaze.setEnd(Maze.position(2, 2));
+            shortestPath = MazeSolver.pStar(smallMaze, 9);
+
+            assertEquals(5, shortestPath.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void multiplePlankPositionsMaze(){
+        try {
+            //link row 1
+            smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+
+            //link row 2
+            smallMaze.linkPillars(Maze.position(0, 1), Maze.position(0,2));
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2,1));
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(1,2));
+
+            //link row 3
+            smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
+            smallMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //set beginning and end
+            smallMaze.setBegin(Maze.position(0, 0));
+            smallMaze.setEnd(Maze.position(2, 2));
+            shortestPath = MazeSolver.pStar(smallMaze, 9);
+
+            assertEquals(5, shortestPath.size());
 
         } catch (Exception e) {
             e.printStackTrace();
