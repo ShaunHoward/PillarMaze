@@ -35,28 +35,8 @@ public class Pillar implements Comparable<Pillar> {
     /* x, y, coordinates of this node in a grid */
     int x = 0, y = 0;
 
-    /* begin, boolean to tell if this node is the beginning node */
-    boolean begin = false;
-
-    /* end, boolean to tell if this node is the end node */
-    boolean end = false;
-
     /* nMap, map of neighbor nodes with key as neighbor and connected boolean as value */
     Map<Pillar, Boolean> neighbors = new HashMap<>();
-
-    /**
-     * Constructs a pillar from its x and y coordinates and
-     * the previously visited pillar.
-     *
-     * @param prev - the previously visited pillar
-     * @param x - the x-coordinate on the grid
-     * @param y - the y-coordinate on the grid
-     */
-    public Pillar(Pillar prev, int x, int y) {
-        this.p = prev;
-        this.x = x;
-        this.y = y;
-    }
 
     /**
      * Constructs a pillar from its x and y coordinates.
@@ -68,7 +48,6 @@ public class Pillar implements Comparable<Pillar> {
         this.x = x;
         this.y = y;
     }
-
 
     /**
      * Gets the previously visited pillar.
@@ -93,7 +72,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the distance from the beginning pillar
      */
-    float getDistanceFromBegin() {
+    public float getDistanceFromBegin() {
         return b;
     }
 
@@ -111,7 +90,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the heuristic distance to the end pillar
      */
-    float getHeuristic() {
+    public float getHeuristic() {
         return e;
     }
 
@@ -129,7 +108,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the cost of this pillar
      */
-    float getCost() {
+    public float getCost() {
         return c;
     }
 
@@ -138,7 +117,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @param c - the cost of this pillar
      */
-    void setCost(float c) {
+    public void setCost(float c) {
         this.c = c;
     }
 
@@ -147,7 +126,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the planks left at this pillar
      */
-    int getPlanksLeft() {
+    public int getPlanksLeft() {
         return n;
     }
 
@@ -170,66 +149,12 @@ public class Pillar implements Comparable<Pillar> {
     }
 
     /**
-     * Sets the x-coordinate of this pillar in a grid.
-     *
-     * @param x - the x-coordinate on the grid
-     */
-    void setX(int x) {
-        this.x = x;
-    }
-
-    /**
      * Gets the y-coordinate of this pillar.
      *
      * @return the y-coordinate of this pillar
      */
     public int getY() {
         return y;
-    }
-
-    /**
-     * Sets the y-coordinate of this pillar in a grid.
-     *
-     * @param y - the y-coordinate on the grid
-     */
-    void setY(int y) {
-        this.y = y;
-    }
-
-    /**
-     * Returns whether this pillar is the begin pillar.
-     *
-     * @return whether this pillar is the begin pillar
-     */
-    public boolean isBegin() {
-        return begin;
-    }
-
-    /**
-     * Set whether this pillar is the beginning pillar.
-     *
-     * @param begin - whether this pillar is the begin pillar
-     */
-    public void setBegin(boolean begin) {
-        this.begin = begin;
-    }
-
-    /**
-     * Returns whether this pillar is the end pillar.
-     *
-     * @return whether this pillar is the end pillar
-     */
-    boolean isEnd() {
-        return end;
-    }
-
-    /**
-     * Set whether this pillar is the ending pillar.
-     *
-     * @param end - whether this pillar is the end pillar
-     */
-    void setEnd(boolean end) {
-        this.end = end;
     }
 
     /**
@@ -249,13 +174,13 @@ public class Pillar implements Comparable<Pillar> {
      * @param connected - whether to get connected neighbors
      * @return connected or disconnected neighbors of this pillar
      */
-    List<Pillar> getNeighborList(boolean connected){
+    public List<Pillar> getNeighborList(boolean connected){
         // The list of neighbors of this pillar.
         List<Pillar> neighborList = new ArrayList<>(neighbors.keySet());
         Iterator<Pillar> listItr = neighborList.iterator();
         Pillar curr = null;
 
-        // Remove any neighbors not matching connected boolean.
+        // Remove any neighbors not matching connected boolean in map.
         while (listItr.hasNext()){
             curr = listItr.next();
             if (neighbors.containsKey(curr) && neighbors.get(curr).booleanValue() != connected){
@@ -266,21 +191,12 @@ public class Pillar implements Comparable<Pillar> {
     }
 
     /**
-     * Set the neighbor pillars of this pillar.
-     *
-     * @param neighbors - the neighbor pillars of this pillar
-     */
-    void setNeighbors(Map<Pillar, Boolean> neighbors) {
-        this.neighbors = neighbors;
-    }
-
-    /**
      * Adds a neighbor pillar to this pillar.
      *
      * @param neighbor - the neighbor pillar to add
      * @param isConnected - whether the neighbor is connected
      */
-    void addNeighbor(Pillar neighbor, boolean isConnected) {
+    public void addNeighbor(Pillar neighbor, boolean isConnected) {
         if (!MazeUtilities.isNull(neighbor)) {
             this.neighbors.put(neighbor, isConnected);
         }

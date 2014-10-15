@@ -206,4 +206,11 @@ public class MazeTest {
         assertFalse(pillarNeighbors.containsKey(new Pillar(0, 0)));
     }
 
+    @Test
+    public void testPositionEquals(){
+        assertEquals(Maze.position(0,0), Maze.position(0,0));
+        assertNotEquals(Maze.position(1,0), Maze.position(0,0));
+        assertNotEquals(Maze.position(0,0), Maze.position(0,1));
+    }
+
 }
