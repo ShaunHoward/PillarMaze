@@ -183,7 +183,7 @@ public class MazeTest {
 
         pillar = smallPillarMap.get(Maze.position(0,0));
         pillarNeighbors = pillar.getNeighbors();
-        assertEquals(false, pillarNeighbors.get(new Pillar(2, 0)));
+        assertFalse(pillarNeighbors.containsKey(new Pillar(2, 0)));
 
         try {
             smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2,2));

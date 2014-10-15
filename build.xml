@@ -1,147 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="pillarmaze" default="all">
-  
-  
-  <property file="build.properties"/>
-  <!-- Uncomment the following property if no tests compilation is needed -->
-  <!-- 
-  <property name="skip.tests" value="true"/>
-   -->
-  
-  <!-- Compiler options -->
-  
-  <property name="compiler.debug" value="on"/>
-  <property name="compiler.generate.no.warnings" value="off"/>
-  <property name="compiler.args" value=""/>
-  <property name="compiler.max.memory" value="700m"/>
-  <patternset id="ignored.files">
-    <exclude name="**/CVS/**"/>
-    <exclude name="**/SCCS/**"/>
-    <exclude name="**/RCS/**"/>
-    <exclude name="**/rcs/**"/>
-    <exclude name="**/.DS_Store/**"/>
-    <exclude name="**/.svn/**"/>
-    <exclude name="**/.pyc/**"/>
-    <exclude name="**/.pyo/**"/>
-    <exclude name="**/*.pyc/**"/>
-    <exclude name="**/*.pyo/**"/>
-    <exclude name="**/.git/**"/>
-    <exclude name="**/*.hprof/**"/>
-    <exclude name="**/_svn/**"/>
-    <exclude name="**/.hg/**"/>
-    <exclude name="**/*.lib/**"/>
-    <exclude name="**/*~/**"/>
-    <exclude name="**/__pycache__/**"/>
-    <exclude name="**/.bundle/**"/>
-    <exclude name="**/*.rbc/**"/>
-  </patternset>
-  <patternset id="library.patterns">
-    <include name="*.zip"/>
-    <include name="*.apk"/>
-    <include name="*.war"/>
-    <include name="*.egg"/>
-    <include name="*.ear"/>
-    <include name="*.ane"/>
-    <include name="*.swc"/>
-    <include name="*.jar"/>
-  </patternset>
-  <patternset id="compiler.resources">
-    <exclude name="**/?*.java"/>
-    <exclude name="**/?*.form"/>
-    <exclude name="**/?*.class"/>
-    <exclude name="**/?*.groovy"/>
-    <exclude name="**/?*.scala"/>
-    <exclude name="**/?*.flex"/>
-    <exclude name="**/?*.kt"/>
-    <exclude name="**/?*.clj"/>
-  </patternset>
-  
-  
-  <!-- Global Libraries -->
-  
-  <!-- Modules -->
-  
-  
-  <!-- Module PillarMaze -->
-  
-  <dirname property="module.pillarmaze.basedir" file="${ant.file}"/>
-  
-  
-  
-  <property name="compiler.args.pillarmaze" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
-  
-  <property name="pillarmaze.output.dir" value="${module.pillarmaze.basedir}/out/production/PillarMaze"/>
-  <property name="pillarmaze.testoutput.dir" value="${module.pillarmaze.basedir}/out/test/PillarMaze"/>
-  
-  <path id="pillarmaze.module.bootclasspath">
-    <!-- Paths to be included in compilation bootclasspath -->
-  </path>
-  
-  <path id="pillarmaze.module.production.classpath"/>
-  
-  <path id="pillarmaze.runtime.production.module.classpath">
-    <pathelement location="${pillarmaze.output.dir}"/>
-  </path>
-  
-  <path id="pillarmaze.module.classpath">
-    <pathelement location="${pillarmaze.output.dir}"/>
-  </path>
-  
-  <path id="pillarmaze.runtime.module.classpath">
-    <pathelement location="${pillarmaze.testoutput.dir}"/>
-    <pathelement location="${pillarmaze.output.dir}"/>
-  </path>
-  
-  
-  <patternset id="excluded.from.module.pillarmaze">
-    <patternset refid="ignored.files"/>
-  </patternset>
-  
-  <patternset id="excluded.from.compilation.pillarmaze">
-    <patternset refid="excluded.from.module.pillarmaze"/>
-  </patternset>
-  
-  <path id="pillarmaze.module.sourcepath">
-    <dirset dir="${module.pillarmaze.basedir}">
-      <include name="src"/>
-    </dirset>
-  </path>
-  
-  
-  <target name="compile.module.pillarmaze" depends="compile.module.pillarmaze.production,compile.module.pillarmaze.tests" description="Compile module PillarMaze"/>
-  
-  <target name="compile.module.pillarmaze.production" description="Compile module PillarMaze; production classes">
-    <mkdir dir="${pillarmaze.output.dir}"/>
-    <javac destdir="${pillarmaze.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
-      <compilerarg line="${compiler.args.pillarmaze}"/>
-      <bootclasspath refid="pillarmaze.module.bootclasspath"/>
-      <classpath refid="pillarmaze.module.production.classpath"/>
-      <src refid="pillarmaze.module.sourcepath"/>
-      <patternset refid="excluded.from.compilation.pillarmaze"/>
-    </javac>
-    
-    <copy todir="${pillarmaze.output.dir}">
-      <fileset dir="${module.pillarmaze.basedir}/src">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-    </copy>
-  </target>
-  
-  <target name="compile.module.pillarmaze.tests" depends="compile.module.pillarmaze.production" description="compile module PillarMaze; test classes" unless="skip.tests"/>
-  
-  <target name="clean.module.pillarmaze" description="cleanup module">
-    <delete dir="${pillarmaze.output.dir}"/>
-    <delete dir="${pillarmaze.testoutput.dir}"/>
-  </target>
-  
-  <target name="init" description="Build initialization">
-    <!-- Perform any build initialization in this target -->
-  </target>
-  
-  <target name="clean" depends="clean.module.pillarmaze" description="cleanup all"/>
-  
-  <target name="build.modules" depends="init, clean, compile.module.pillarmaze" description="build all modules"/>
-  
-  <target name="all" depends="build.modules" description="build all"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Defines the project. basedir is where the base directory of the project is, default is the target that gets used when none are specified, and name is the name of the project. -->
+<project basedir="." default="build" name="PillarMaze">
+	<property environment="env"/>
+	<!-- The below property tags create variables to be used later. -->
+	<property name="junit.output.dir" value="junit"/>
+	<property name="debuglevel" value="source,lines,vars"/>
+	<property name="target" value="1.6"/>
+	<property name="source" value="1.6"/>
+	<property name="src" location="./src"/>
+	<property name="bin" location="./bin"/>
+
+	
+	<path id="JUnit4.libraryclasspath"> <!-- Path information for JUnit jars -->
+		<!-- These locations assume that your JUnit jars are in the same directory as your project. Change them to match where you keep yours. -->
+		<pathelement location="junit.jar"/>
+		<pathelement location="org.hamcrest.core_1.1.0.v20090501071000.jar"/> <!-- Change this if your JUnit is a different version. -->
+	</path>
+
+	<path id="PillarMaze.classpath"> <!-- Path information for the project's compiled classes -->
+		<pathelement location="bin"/> <!-- Where compiled code goes -->
+		<path refid="JUnit4.libraryclasspath"/> <!-- Includes the JUnit path information in this path -->
+	</path>
+
+	<!-- The parts of these target tags are the commands that get run when those targets are used. -->
+	<target name="clean">
+		<!-- This clears out the bin folder. -->
+		<delete dir="bin"/>
+	</target>
+
+	<target name="build">
+		<mkdir dir="./bin"/>
+		<echo message="${ant.project.name}: ${ant.file}"/> <!-- These variables are filled in by Ant; the former comes from the name field in the project tag, the latter, from the file it's operating on. -->
+		<!-- Builds the main portion of the project -->
+		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/"/> <!-- Where the source code is -->
+			<classpath refid="JUnit4.libraryclasspath"/> <!-- Imports JUnit so we can compile JUnit test cases -->
+            <classpath refid="PillarMaze.classpath"/> 
+        </javac>
+
+        <!-- You can build from multiple directories, in this case, a folder for tests -->
+		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/tests"/> <!-- Where the tests' source code is -->
+			<classpath refid="JUnit4.libraryclasspath"/>
+            <classpath refid="PillarMaze.classpath"/> 
+        </javac>
+    </target>
+
+	<target name="test" depends="build"> <!-- Builds the code via the depends feature, and then runs tests -->
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr"> <!-- Runs the tests as a forked process -->
+            <formatter type="plain"/>
+            <batchtest>
+       			<fileset dir="./bin/">
+            		<include name="**/*Test.class" /> <!-- Tells it to use any file in any subfolder of the project, so long as that file's name ends in Test.class -->
+       			</fileset>
+    		</batchtest>
+            <classpath refid="PillarMaze.classpath"/>
+        </junit>
+    </target>
 </project>

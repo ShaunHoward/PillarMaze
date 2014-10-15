@@ -29,7 +29,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void givenMaze(){
+    public void testGivenMaze(){
         try {
             //link row 1
             largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -73,7 +73,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void traverseOnlyWithPlankMaze(){
+    public void testTraverseOnlyWithPlankMaze(){
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -101,7 +101,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void impossibleTraversalMaze(){
+    public void testImpossibleTraversalMaze(){
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -125,7 +125,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void noBenefitFromPlankMaze(){
+    public void testNoBenefitFromPlankMaze(){
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -155,7 +155,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void multiplePlankPositionsMaze(){
+    public void testMultiplePlankPositionsMaze(){
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
