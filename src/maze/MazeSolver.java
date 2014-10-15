@@ -216,7 +216,7 @@ public class MazeSolver {
      * @return the distance from the given pillar to the
      * end of the maze
      */
-    static float distanceToEnd(Pillar current, Pillar end) {
+    public static float distanceToEnd(Pillar current, Pillar end) {
         /* call the current node 'c' */
         Pillar c = current;
 

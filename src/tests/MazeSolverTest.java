@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -202,5 +203,14 @@ public class MazeSolverTest {
         assertEquals(2, path.size());
         assertEquals(p, path.get(0));
         assertEquals(q, path.get(1));
+    }
+
+    @Test
+    public void testDistanceToEnd(){
+        //set beginning and end
+        smallMaze.setBegin(Maze.position(0, 0));
+        smallMaze.setEnd(Maze.position(2, 2));
+        Map<Maze.Position, Pillar> smallMap = smallMaze.getPillars();
+        assertEquals(4, MazeSolver.distanceToEnd(smallMap.get(Maze.position(0,0)), smallMap.get(Maze.position(2,2))), .01);
     }
 }
