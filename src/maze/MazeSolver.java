@@ -182,7 +182,7 @@ public class MazeSolver {
      * @return the list of pillars from the beginning of the
      * maze to the end of the maze
      */
-    static List<Pillar> shortestPath(Pillar end) {
+    public static List<Pillar> shortestPath(Pillar end) {
         /* initialize the path list */
         List<Pillar> shortestPath = new ArrayList<>();
 

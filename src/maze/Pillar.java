@@ -63,7 +63,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @param p - the previously visited pillar
      */
-    void setPrevious(Pillar p) {
+    public void setPrevious(Pillar p) {
         this.p = p;
     }
 
