@@ -250,10 +250,12 @@ public class Pillar implements Comparable<Pillar> {
      * @return connected or disconnected neighbors of this pillar
      */
     List<Pillar> getNeighborList(boolean connected){
-
+        // The list of neighbors of this pillar.
         List<Pillar> neighborList = new ArrayList<>(neighbors.keySet());
         Iterator<Pillar> listItr = neighborList.iterator();
         Pillar curr = null;
+
+        // Remove any neighbors not matching connected boolean.
         while (listItr.hasNext()){
             curr = listItr.next();
             if (neighbors.containsKey(curr) && neighbors.get(curr).booleanValue() != connected){

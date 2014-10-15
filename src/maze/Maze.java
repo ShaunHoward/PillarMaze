@@ -93,76 +93,56 @@ public class Maze {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
                 pillar = pillars.get(new Position(j, i));
-                pillar.addNeighbor(getBelowPillar(pillar), false);
-                pillar.addNeighbor(getAbovePillar(pillar), false);
-                pillar.addNeighbor(getLeftPillar(pillar), false);
-                pillar.addNeighbor(getRightPillar(pillar), false);
+                pillar.addNeighbor(getVerticalPillar(pillar, false), false);
+                pillar.addNeighbor(getVerticalPillar(pillar, true), false);
+                pillar.addNeighbor(getHorizontalPillar(pillar, true), false);
+                pillar.addNeighbor(getHorizontalPillar(pillar, false), false);
             }
         }
     }
 
     /**
-     * Gets the pillar below the given pillar, otherwise
+     * Gets the pillar above or below the given pillar, otherwise
      * returns null.
      *
-     * @param pillar - the pillar to find the pillar below
-     * @return the pillar below the given pillar
+     * @param pillar - the pillar to find above or below the
+     *               current pillar
+     * @param above - if this pillar is above the current pillar
+     * @return the pillar above or below the current pillar
      */
-    Pillar getBelowPillar(Pillar pillar) {
+    Pillar getVerticalPillar(Pillar pillar, boolean above){
         int x = pillar.getX();
         int y = pillar.getY();
-        if (y > 0) {
-            return pillars.get(new Position(x, y - 1));
+        Pillar vertical = null;
+
+        if (y > 0 && !above) {
+            vertical = pillars.get(new Position(x, y - 1));
+        } else if (y < length && above) {
+            vertical = pillars.get(new Position(x, y + 1));
         }
-        return null;
+        return vertical;
     }
 
     /**
-     * Gets the pillar above the given pillar, otherwise
+     * Gets the pillar left or right of the given pillar, otherwise
      * returns null.
      *
-     * @param pillar - the pillar to find the pillar above
-     * @return the pillar above the given pillar
+     * @param pillar - the pillar to find left or right of the
+     *               current pillar
+     * @param left - if this pillar is left of the current pillar
+     * @return the pillar left or right of the current pillar
      */
-    Pillar getAbovePillar(Pillar pillar) {
+    Pillar getHorizontalPillar(Pillar pillar, boolean left){
         int x = pillar.getX();
         int y = pillar.getY();
-        if (y < width) {
-            return pillars.get(new Position(x, y + 1));
-        }
-        return null;
-    }
+        Pillar horizontal = null;
 
-    /**
-     * Gets the pillar right of the given pillar, otherwise
-     * returns null.
-     *
-     * @param pillar - the pillar to find the pillar right of
-     * @return the pillar right of the given pillar
-     */
-    Pillar getRightPillar(Pillar pillar) {
-        int x = pillar.getX();
-        int y = pillar.getY();
-        if (x > 0) {
-            return pillars.get(new Position(x - 1, y));
+        if (x > 0 && !left) {
+            horizontal = pillars.get(new Position(x - 1, y));
+        } else if (x < width && left) {
+            horizontal = pillars.get(new Position(x + 1, y));
         }
-        return null;
-    }
-
-    /**
-     * Gets the pillar left of the given pillar, otherwise
-     * returns null.
-     *
-     * @param pillar - the pillar to find the pillar left of
-     * @return the pillar left of the given pillar
-     */
-    Pillar getLeftPillar(Pillar pillar) {
-        int x = pillar.getX();
-        int y = pillar.getY();
-        if (x < length) {
-            return pillars.get(new Position(x + 1, y));
-        }
-        return null;
+        return horizontal;
     }
 
     /**
@@ -184,20 +164,6 @@ public class Maze {
             neighbors.put(end, true);
         }
     }
-
-//    /**
-//     * Adds the given pillar to the set of pillars.
-//     *
-//     * @param pillar - the pillar to add to the set
-//     */
-//    void addPillar(Pillar pillar) {
-//        pillars.pu(pillar);
-//        if (pillar.isBegin()) {
-//            begin = pillar;
-//        } else if (pillar.isEnd()) {
-//            end = pillar;
-//        }
-//    }
 
     /**
      * Gets the beginning pillar of this maze.
