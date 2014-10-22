@@ -22,7 +22,7 @@ public class MazeSolver {
      * @param maze - the maze to find the shortest path through
      * @param size - the expected size of the maze
      * @throws Exception - thrown when the actual and expected maze sizes
-     * differ
+     *                   differ
      */
     public static List<Pillar> pStar(Maze maze, int size) throws Exception {
 
@@ -103,8 +103,8 @@ public class MazeSolver {
      * of new pillars and initializing it's values.
      *
      * @param maze - the maze to search
-     * @param E - the set of explored pillars
-     * @param N - the priority queue of new pillars
+     * @param E    - the set of explored pillars
+     * @param N    - the priority queue of new pillars
      * @throws Exception - thrown when the maze does not have a beginning pillar
      */
     static void initializeSearch(Maze maze, Set<Pillar> E, PriorityQueue<Pillar> N) throws Exception {
@@ -112,22 +112,17 @@ public class MazeSolver {
         /* make sure maze has a beginning node */
         MazeUtilities.throwExceptionWhenNull(maze.getBegin());
 
-        /* if maze size is greater than 0 */
-        if (maze.size > 0) {
+        /* The beginning pillar of the maze. */
+        Pillar pillar = maze.getBegin();
 
-            /* The beginning pillar of the maze. */
-            Pillar pillar = maze.getBegin();
+        /* add the beginning node of maze to E */
+        E.add(pillar);
 
-           /* add the beginning node of maze to E */
-            E.add(pillar);
-
-           /* add the beginning node to N with c=0, n=1, e=distance to end from beginning */
-            pillar.setCost(0);
-            pillar.setPlanksLeft(1);
-            pillar.setHeuristic(distanceToEnd(pillar, maze.getEnd()));
-            N.add(pillar);
-        }
-
+        /* add the beginning node to N with c=0, n=1, e=distance to end from beginning */
+        pillar.setCost(0);
+        pillar.setPlanksLeft(1);
+        pillar.setHeuristic(distanceToEnd(pillar, maze.getEnd()));
+        N.add(pillar);
     }
 
     /**
@@ -135,10 +130,10 @@ public class MazeSolver {
      * that are its neighbors. These newly connected pillars are added to the set
      * of explored pillars, E, and the priority queue of new pillars, N.
      *
-     * @param v - the currently visited pillar
+     * @param v   - the currently visited pillar
      * @param end - the end pillar of the maze
-     * @param E - the set of explored pillars
-     * @param N - the priority queue of new pillars
+     * @param E   - the set of explored pillars
+     * @param N   - the priority queue of new pillars
      * @throws Exception - thrown when the end pillar is null
      */
     static void attemptLinks(Pillar v, Pillar end, Set<Pillar> E, PriorityQueue<Pillar> N) throws Exception {

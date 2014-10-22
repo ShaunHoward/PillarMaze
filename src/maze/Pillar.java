@@ -54,7 +54,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @return the previously visited pillar
      */
-    Pillar getPrevious() {
+    public Pillar getPrevious() {
         return p;
     }
 
@@ -81,7 +81,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @param b - the distance from the beginning pillar
      */
-    void setDistanceFromBegin(float b) {
+    public void setDistanceFromBegin(float b) {
         this.b = b;
     }
 
@@ -99,7 +99,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @param e - the heuristic distance to the end pillar
      */
-    void setHeuristic(float e) {
+    public void setHeuristic(float e) {
         this.e = e;
     }
 
@@ -135,7 +135,7 @@ public class Pillar implements Comparable<Pillar> {
      *
      * @param n - the planks left at this pillar
      */
-    void setPlanksLeft(int n) {
+    public void setPlanksLeft(int n) {
         this.n = n;
     }
 

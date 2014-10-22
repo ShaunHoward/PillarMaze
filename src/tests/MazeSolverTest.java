@@ -6,11 +6,9 @@ import maze.Pillar;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -21,6 +19,11 @@ import static org.junit.Assert.fail;
  * @author Shaun Howard
  */
 public class MazeSolverTest {
+
+    Map<Maze.Position, Pillar> testPillars;
+    Set<Pillar> testESet;
+    PriorityQueue<Pillar> testNQueue;
+    Pillar testPillar;
 
     MazeSolver solver;
 
@@ -37,6 +40,8 @@ public class MazeSolverTest {
 
     @Before
     public void setUp() {
+        testESet = new HashSet<>();
+        testNQueue = new PriorityQueue<>();
         solver = new MazeSolver();
         zeroPillarMaze = new Maze(0, 0);
         onePillarMaze = new Maze(1, 1);
@@ -55,7 +60,7 @@ public class MazeSolverTest {
 
         // Gather attemptLinks() method
         try {
-            attemptLinks = solver.getClass().getDeclaredMethod("attemptLinks",Pillar.class, Pillar.class,
+            attemptLinks = solver.getClass().getDeclaredMethod("attemptLinks", Pillar.class, Pillar.class,
                     Set.class, PriorityQueue.class);
             attemptLinks.setAccessible(true);
         } catch (NoSuchMethodException e) {
@@ -73,7 +78,7 @@ public class MazeSolverTest {
         shortestPath = MazeSolver.pStar(onePillarMaze, 1);
     }
 
-    @Test(expected=Exception.class)
+    @Test(expected = Exception.class)
     public void testMazeSizeMismatch() throws Exception {
         shortestPath = MazeSolver.pStar(smallMaze, 20);
     }
@@ -119,7 +124,6 @@ public class MazeSolverTest {
             assertEquals(null, shortestPath);
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -173,7 +177,6 @@ public class MazeSolverTest {
             assertEquals(9, shortestPath.size());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -240,13 +243,12 @@ public class MazeSolverTest {
             assertEquals("<4, 4>", shortestPath2.get(8).getCoordinateString());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
 
     @Test
-    public void testPathAlongBorder(){
+    public void testPathAlongBorder() {
         try {
             //link row 1
             largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -282,7 +284,6 @@ public class MazeSolverTest {
             assertEquals(9, shortestPath.size());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -310,7 +311,6 @@ public class MazeSolverTest {
             assertEquals(5, shortestPath.size());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -334,7 +334,6 @@ public class MazeSolverTest {
             assertEquals(null, shortestPath);
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -364,7 +363,6 @@ public class MazeSolverTest {
             assertEquals(5, shortestPath.size());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -393,7 +391,6 @@ public class MazeSolverTest {
             assertEquals(5, shortestPath.size());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
@@ -424,13 +421,124 @@ public class MazeSolverTest {
 
     @Test
     public void testInitializeSearch() {
-        //invoke initSearch
+        try {
+            smallMaze.setBegin(Maze.position(1, 1));
+            initSearch.invoke(solver.getClass(), smallMaze, testESet, testNQueue);
+        } catch (Exception e) {
+            fail("Unexpectedly could not invoke initializeSearch().");
+        }
 
+        assertEquals(1, testESet.size());
+        assertEquals(1, testNQueue.size());
+    }
+
+    @Test(expected = Exception.class)
+    public void testInvalidSizeInitializeSearch() throws Exception {
+        zeroPillarMaze.setBegin(Maze.position(0, 0));
+        initSearch.invoke(solver.getClass(), zeroPillarMaze, testESet, testNQueue);
     }
 
     @Test
     public void testAttemptLinks() {
-        //invoke attemptLinks
+        try {
+            //link row 1
+            largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            largeMaze.linkPillars(Maze.position(2, 0), Maze.position(3, 0));
+            largeMaze.linkPillars(Maze.position(3, 0), Maze.position(4, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
 
+            //link row 2
+            largeMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+            largeMaze.linkPillars(Maze.position(1, 1), Maze.position(1, 2));
+            largeMaze.linkPillars(Maze.position(3, 1), Maze.position(4, 1));
+
+            //link row 3
+            largeMaze.linkPillars(Maze.position(1, 2), Maze.position(1, 3));
+            largeMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //link row 4
+            largeMaze.linkPillars(Maze.position(1, 3), Maze.position(0, 3));
+            largeMaze.linkPillars(Maze.position(1, 3), Maze.position(2, 3));
+            largeMaze.linkPillars(Maze.position(3, 3), Maze.position(4, 3));
+            largeMaze.linkPillars(Maze.position(0, 3), Maze.position(0, 4));
+
+            //link row 5
+            largeMaze.linkPillars(Maze.position(0, 4), Maze.position(1, 4));
+            largeMaze.linkPillars(Maze.position(1, 4), Maze.position(2, 4));
+            largeMaze.linkPillars(Maze.position(2, 4), Maze.position(3, 4));
+            largeMaze.linkPillars(Maze.position(3, 4), Maze.position(4, 4));
+
+            //set beginning and end
+            largeMaze.setBegin(Maze.position(0, 0));
+            largeMaze.setEnd(Maze.position(4, 4));
+        } catch (Exception e) {
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+
+        //invoke attemptLinks
+        try {
+            testPillars = largeMaze.getPillars();
+            testPillar = testPillars.get(Maze.position(3,3));
+            testPillar.setPlanksLeft(1);
+            attemptLinks.invoke(solver.getClass(), testPillar, largeMaze.getEnd(), testESet, testNQueue);
+        } catch (Exception e) {
+            fail("Unexpectedly could not invoke attemptLinks().");
+        }
+
+        assertEquals(3, testESet.size());
+        assertEquals(3, testNQueue.size());
+    }
+
+    @Test
+    public void testInvalidAttemptLinks() {
+        try {
+            //link row 1
+            largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            largeMaze.linkPillars(Maze.position(2, 0), Maze.position(3, 0));
+            largeMaze.linkPillars(Maze.position(3, 0), Maze.position(4, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+            //link row 2
+            largeMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+            largeMaze.linkPillars(Maze.position(1, 1), Maze.position(1, 2));
+            largeMaze.linkPillars(Maze.position(3, 1), Maze.position(4, 1));
+
+            //link row 3
+            largeMaze.linkPillars(Maze.position(1, 2), Maze.position(1, 3));
+            largeMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //link row 4
+            largeMaze.linkPillars(Maze.position(1, 3), Maze.position(0, 3));
+            largeMaze.linkPillars(Maze.position(1, 3), Maze.position(2, 3));
+            largeMaze.linkPillars(Maze.position(3, 3), Maze.position(4, 3));
+            largeMaze.linkPillars(Maze.position(0, 3), Maze.position(0, 4));
+
+            //link row 5
+            largeMaze.linkPillars(Maze.position(0, 4), Maze.position(1, 4));
+            largeMaze.linkPillars(Maze.position(1, 4), Maze.position(2, 4));
+            largeMaze.linkPillars(Maze.position(2, 4), Maze.position(3, 4));
+            largeMaze.linkPillars(Maze.position(3, 4), Maze.position(4, 4));
+
+            //set beginning and end
+            largeMaze.setBegin(Maze.position(0, 0));
+            largeMaze.setEnd(Maze.position(4, 4));
+        } catch (Exception e) {
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+
+        //invoke attemptLinks
+        try {
+            testPillars = largeMaze.getPillars();
+            testPillar = testPillars.get(Maze.position(3,3));
+            testPillar.setPlanksLeft(0);
+            attemptLinks.invoke(solver.getClass(), testPillar, largeMaze.getEnd(), testESet, testNQueue);
+        } catch (Exception e) {
+            fail("Unexpectedly could not invoke attemptLinks().");
+        }
+
+        assertEquals(0, testESet.size());
+        assertEquals(0, testNQueue.size());
     }
 }
