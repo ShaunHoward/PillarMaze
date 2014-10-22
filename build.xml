@@ -38,24 +38,24 @@
             <classpath refid="PillarMaze.classpath"/> 
         </javac>
 
-        <!--&lt;!&ndash; You can build from multiple directories, in this case, a folder for tests &ndash;&gt;-->
-		<!--<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">-->
-            <!--<src path="src/tests"/> &lt;!&ndash; Where the tests' source code is &ndash;&gt;-->
-			<!--<classpath refid="JUnit4.libraryclasspath"/>-->
-            <!--<classpath refid="PillarMaze.classpath"/> -->
-        <!--</javac>-->
+        <!-- You can build from multiple directories, in this case, a folder for tests -->
+		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/tests"/> <!-- Where the tests' source code is -->
+			<classpath refid="JUnit4.libraryclasspath"/>
+            <classpath refid="PillarMaze.classpath"/>
+        </javac>
     </target>
 
-	<!--<target name="test" depends="build"> &lt;!&ndash; Builds the code via the depends feature, and then runs tests &ndash;&gt;-->
-        <!--<mkdir dir="${junit.output.dir}"/>-->
-        <!--<junit fork="yes" printsummary="withOutAndErr"> &lt;!&ndash; Runs the tests as a forked process &ndash;&gt;-->
-            <!--<formatter type="plain"/>-->
-            <!--<batchtest>-->
-       			<!--<fileset dir="./bin/">-->
-            		<!--<include name="**/*Test.class" /> &lt;!&ndash; Tells it to use any file in any subfolder of the project, so long as that file's name ends in Test.class &ndash;&gt;-->
-       			<!--</fileset>-->
-    		<!--</batchtest>-->
-            <!--<classpath refid="PillarMaze.classpath"/>-->
-        <!--</junit>-->
-    <!--</target>-->
+	<target name="test" depends="build"> <!-- Builds the code via the depends feature, and then runs tests -->
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr"> <!-- Runs the tests as a forked process -->
+            <formatter type="plain"/>
+            <batchtest>
+       			<fileset dir="./bin/">
+            		<include name="**/*Test.class" /> <!-- Tells it to use any file in any subfolder of the project, so long as that file's name ends in Test.class -->
+       			</fileset>
+    		</batchtest>
+            <classpath refid="PillarMaze.classpath"/>
+        </junit>
+    </target>
 </project>
