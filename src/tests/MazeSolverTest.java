@@ -178,7 +178,6 @@ public class MazeSolverTest {
             assertEquals(18, shortestPath.size());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail("Unexpected exception was thrown while linking pillars.");
         }
     }
