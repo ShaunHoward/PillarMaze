@@ -67,8 +67,8 @@ public class Maze {
      */
     void constructPillars() {
         Pillar pillar;
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
                 pillar = new Pillar(j, i);
                 pillars.put(new Position(j, i), pillar);
             }
@@ -90,8 +90,8 @@ public class Maze {
          * them to the map of neighbors for that pillar.
          * Null neighbors will not be added to the map.
          */
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
                 pillar = pillars.get(new Position(j, i));
                 pillar.addNeighbor(getVerticalPillar(pillar, false), false);
                 pillar.addNeighbor(getVerticalPillar(pillar, true), false);
