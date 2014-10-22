@@ -110,7 +110,7 @@ public class Maze {
      * @param above  - if this pillar is above the current pillar
      * @return the pillar above or below the current pillar
      */
-    Pillar getVerticalPillar(Pillar pillar, boolean above) {
+    public Pillar getVerticalPillar(Pillar pillar, boolean above) {
         int x = pillar.getX();
         int y = pillar.getY();
         Pillar vertical = null;
@@ -132,7 +132,7 @@ public class Maze {
      * @param left   - if this pillar is left of the current pillar
      * @return the pillar left or right of the current pillar
      */
-    Pillar getHorizontalPillar(Pillar pillar, boolean left) {
+    public Pillar getHorizontalPillar(Pillar pillar, boolean left) {
         int x = pillar.getX();
         int y = pillar.getY();
         Pillar horizontal = null;

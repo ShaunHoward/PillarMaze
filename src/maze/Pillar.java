@@ -232,7 +232,7 @@ public class Pillar implements Comparable<Pillar> {
      * @param pillar - the pillar to compare with this pillar
      * @return whether the the pillars are the same
      */
-    boolean samePillars(Pillar pillar) {
+    public boolean samePillars(Pillar pillar) {
         if (this.getX() == pillar.getX()
                 && this.getY() == pillar.getY()
                 && this.getCost() == pillar.getCost()) {

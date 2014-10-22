@@ -6,8 +6,11 @@ import maze.Pillar;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -19,21 +22,45 @@ import static org.junit.Assert.fail;
  */
 public class MazeSolverTest {
 
+    MazeSolver solver;
+
     Maze zeroPillarMaze;
     Maze onePillarMaze;
     Maze smallMaze;
     Maze largeMaze;
     Maze rectangleMaze;
 
-    List<Pillar> shortestPath;
+    Method initSearch;
+    Method attemptLinks;
+
+    List<Pillar> shortestPath, shortestPath2;
 
     @Before
     public void setUp() {
+        solver = new MazeSolver();
         zeroPillarMaze = new Maze(0, 0);
         onePillarMaze = new Maze(1, 1);
         smallMaze = new Maze(3, 3);
         largeMaze = new Maze(5, 5);
         rectangleMaze = new Maze(4, 6);
+
+        // Gather initializeSearch() method
+        try {
+            initSearch = solver.getClass().getDeclaredMethod("initializeSearch", Maze.class, Set.class,
+                    PriorityQueue.class);
+            initSearch.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            fail("Unable to find initializeSearch() method declaration.");
+        }
+
+        // Gather attemptLinks() method
+        try {
+            attemptLinks = solver.getClass().getDeclaredMethod("attemptLinks",Pillar.class, Pillar.class,
+                    Set.class, PriorityQueue.class);
+            attemptLinks.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            fail("Unable to find attemptLinks() method declaration.");
+        }
     }
 
     @Test(expected = Exception.class)
@@ -144,6 +171,73 @@ public class MazeSolverTest {
             assertEquals("<4, 4>", shortestPath.get(8).getCoordinateString());
 
             assertEquals(9, shortestPath.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void testSolveGivenMazeTwice() {
+        try {
+            //link row 1
+            largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            largeMaze.linkPillars(Maze.position(2, 0), Maze.position(3, 0));
+            largeMaze.linkPillars(Maze.position(3, 0), Maze.position(4, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+            //link row 2
+            largeMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+            largeMaze.linkPillars(Maze.position(1, 1), Maze.position(1, 2));
+            largeMaze.linkPillars(Maze.position(3, 1), Maze.position(4, 1));
+
+            //link row 3
+            largeMaze.linkPillars(Maze.position(1, 2), Maze.position(1, 3));
+            largeMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //link row 4
+            largeMaze.linkPillars(Maze.position(1, 3), Maze.position(0, 3));
+            largeMaze.linkPillars(Maze.position(1, 3), Maze.position(2, 3));
+            largeMaze.linkPillars(Maze.position(3, 3), Maze.position(4, 3));
+            largeMaze.linkPillars(Maze.position(0, 3), Maze.position(0, 4));
+
+            //link row 5
+            largeMaze.linkPillars(Maze.position(0, 4), Maze.position(1, 4));
+            largeMaze.linkPillars(Maze.position(1, 4), Maze.position(2, 4));
+            largeMaze.linkPillars(Maze.position(2, 4), Maze.position(3, 4));
+            largeMaze.linkPillars(Maze.position(3, 4), Maze.position(4, 4));
+
+            //set beginning and end
+            largeMaze.setBegin(Maze.position(0, 0));
+            largeMaze.setEnd(Maze.position(4, 4));
+            shortestPath = MazeSolver.pStar(largeMaze, 25);
+            shortestPath2 = MazeSolver.pStar(largeMaze, 25);
+
+            assertEquals(9, shortestPath.size());
+
+            assertEquals(shortestPath.size(), shortestPath2.size());
+
+            assertEquals("<0, 0>", shortestPath.get(0).getCoordinateString());
+            assertEquals("<1, 0>", shortestPath.get(1).getCoordinateString());
+            assertEquals("<1, 1>", shortestPath.get(2).getCoordinateString());
+            assertEquals("<1, 2>", shortestPath.get(3).getCoordinateString());
+            assertEquals("<1, 3>", shortestPath.get(4).getCoordinateString());
+            assertEquals("<1, 4>", shortestPath.get(5).getCoordinateString());
+            assertEquals("<2, 4>", shortestPath.get(6).getCoordinateString());
+            assertEquals("<3, 4>", shortestPath.get(7).getCoordinateString());
+            assertEquals("<4, 4>", shortestPath.get(8).getCoordinateString());
+
+            assertEquals("<0, 0>", shortestPath2.get(0).getCoordinateString());
+            assertEquals("<0, 1>", shortestPath2.get(1).getCoordinateString());
+            assertEquals("<0, 2>", shortestPath2.get(2).getCoordinateString());
+            assertEquals("<0, 3>", shortestPath2.get(3).getCoordinateString());
+            assertEquals("<0, 4>", shortestPath2.get(4).getCoordinateString());
+            assertEquals("<1, 4>", shortestPath2.get(5).getCoordinateString());
+            assertEquals("<2, 4>", shortestPath2.get(6).getCoordinateString());
+            assertEquals("<3, 4>", shortestPath2.get(7).getCoordinateString());
+            assertEquals("<4, 4>", shortestPath2.get(8).getCoordinateString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -326,5 +420,17 @@ public class MazeSolverTest {
         } catch (Exception e) {
             fail("Unexpectedly failed to get the distance to the end of the maze.");
         }
+    }
+
+    @Test
+    public void testInitializeSearch() {
+        //invoke initSearch
+
+    }
+
+    @Test
+    public void testAttemptLinks() {
+        //invoke attemptLinks
+
     }
 }

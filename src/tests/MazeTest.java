@@ -5,7 +5,10 @@ import maze.Pillar;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +19,7 @@ import static org.junit.Assert.*;
  */
 public class MazeTest {
 
+    Maze maze;
     Maze.Position pos;
     Pillar pillar;
     Maze smallMaze;
@@ -24,14 +28,35 @@ public class MazeTest {
     Map<Maze.Position, Pillar> largePillarMap;
     Map<Pillar, Boolean> pillarNeighbors;
 
+    Method constructPillars;
+    Method setNeighbors;
+
     @Before
     public void setUp(){
+        maze = new Maze(5,5);
         pos = null;
         pillar = null;
         smallMaze = new Maze(3, 3);
         largeMaze = new Maze(5, 5);
         smallPillarMap = smallMaze.getPillars();
         largePillarMap = largeMaze.getPillars();
+
+        // Gather constructPillars() method
+        try {
+            constructPillars = maze.getClass().getDeclaredMethod("constructPillars", null);
+            constructPillars.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            fail("Unable to find constructPillars() method declaration.");
+        }
+
+        // Gather setNeighbors() method
+        try {
+            setNeighbors = maze.getClass().getDeclaredMethod("setNeighbors", null);
+            setNeighbors.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            fail("Unable to find setNeighbors() method declaration.");
+        }
+
     }
 
     @Test
@@ -244,9 +269,19 @@ public class MazeTest {
 
     @Test
     public void testPosition(){
-        pos = Maze.position(25,28);
+        pos = Maze.position(25, 28);
         assertEquals(Maze.Position.class, pos.getClass());
         assertEquals(pos, Maze.position(25, 28));
+    }
+
+    @Test
+    public void testConstructPillars(){
+       //invoke constructPillars()
+    }
+
+    @Test
+    public void testSetNeighbors(){
+        //invoke setNeighbors()
     }
 
 }
