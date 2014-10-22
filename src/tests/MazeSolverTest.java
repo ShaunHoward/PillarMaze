@@ -68,21 +68,25 @@ public class MazeSolverTest {
         }
     }
 
+    //Structured Basis, Data-flow, bad data
     @Test(expected = Exception.class)
     public void testZeroPillarMaze() throws Exception {
         shortestPath = MazeSolver.pStar(zeroPillarMaze, 0);
     }
 
+    //Structured Basis, Data-flow, bad data
     @Test(expected = Exception.class)
     public void testOnePillarMaze() throws Exception {
         shortestPath = MazeSolver.pStar(onePillarMaze, 1);
     }
 
+    //Structured Basis, Data-flow, bad data
     @Test(expected = Exception.class)
     public void testMazeSizeMismatch() throws Exception {
         shortestPath = MazeSolver.pStar(smallMaze, 20);
     }
 
+    //Structured Basis, Data-flow, bad data
     @Test(expected = Exception.class)
     public void testMazeWithoutBeginning() throws Exception {
         //link row 1
@@ -102,6 +106,7 @@ public class MazeSolverTest {
         shortestPath = MazeSolver.pStar(smallMaze, 9);
     }
 
+    //Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testMazeWithoutEnd() {
         try {
@@ -128,6 +133,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Stress-test, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testExtraLargeRectangleMaze() {
         try {
@@ -182,6 +188,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGivenMaze() {
         try {
@@ -235,6 +242,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Irregular case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testSolveIrregularBeginAndEndMaze(){
         try {
@@ -286,6 +294,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Reverse large case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testSolveBackwardMaze(){
         try {
@@ -329,6 +338,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Repetition case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testSolveGivenMazeTwice() {
         try {
@@ -395,6 +405,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Border case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testPathAlongBorder() {
         try {
@@ -436,6 +447,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Special, only with plank case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testTraverseOnlyWithPlankMaze() {
         try {
@@ -463,6 +475,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Impossible case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testImpossibleTraversalMaze() {
         try {
@@ -486,6 +499,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Nominal case, many paths, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testNoBenefitFromPlankMaze() {
         try {
@@ -515,6 +529,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testMultiplePlankPositionsMaze() {
         try {
@@ -543,6 +558,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Small case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testShortestPath() {
         Pillar p = new Pillar(0, 0);
@@ -554,6 +570,7 @@ public class MazeSolverTest {
         assertEquals(q, path.get(1));
     }
 
+    //Small case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testDistanceToEnd() {
         //set beginning and end
@@ -567,6 +584,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Null case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testNullDistanceToEnd() {
         //set beginning and end
@@ -580,6 +598,7 @@ public class MazeSolverTest {
         }
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testInitializeSearch() {
         try {
@@ -593,12 +612,14 @@ public class MazeSolverTest {
         assertEquals(1, testNQueue.size());
     }
 
+    //Nominal case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test(expected = Exception.class)
     public void testInvalidSizeInitializeSearch() throws Exception {
         zeroPillarMaze.setBegin(Maze.position(0, 0));
         initSearch.invoke(solver.getClass(), zeroPillarMaze, testESet, testNQueue);
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testAttemptLinks() {
         try {
@@ -651,6 +672,7 @@ public class MazeSolverTest {
         assertEquals(3, testNQueue.size());
     }
 
+    //Nominal case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testInvalidAttemptLinks() {
         try {

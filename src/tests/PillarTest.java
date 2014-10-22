@@ -29,7 +29,7 @@ public class PillarTest {
         pillar4 = new Pillar(1,1);
     }
 
-    //test addNeighbor
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testAddNeighbor(){
         Map<Pillar, Boolean> neighbors;
@@ -64,7 +64,7 @@ public class PillarTest {
         assertEquals(false, neighbors.get(pillar3));
     }
 
-    //test getNeighbors
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGetNeighbors(){
         Map<Pillar, Boolean> neighbors;
@@ -91,7 +91,7 @@ public class PillarTest {
         assertTrue(neighbors.containsKey(pillar1));
     }
 
-    //test getNeighborList
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGetNeighborList(){
 
@@ -160,7 +160,7 @@ public class PillarTest {
         assertEquals(1, neighborList.size());
     }
 
-    //test compareTo
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testCompareTo(){
 
@@ -180,7 +180,7 @@ public class PillarTest {
         assertEquals(1, pillar1.compareTo(pillar2));
     }
 
-    //test equals
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testEquals(){
         //equals
@@ -206,7 +206,7 @@ public class PillarTest {
         assertTrue(pillar3.equals(testPillar3));
     }
 
-    //test not equals
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testNotEquals(){
         //unequals
@@ -233,7 +233,7 @@ public class PillarTest {
         assertFalse(pillar3.equals(testPillar3));
     }
 
-    //test null equals
+    //Nominal case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testNullEquals(){
         //unequals

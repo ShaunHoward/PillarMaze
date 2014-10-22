@@ -66,16 +66,19 @@ public class MazeTest {
 
     }
 
+    //Small case, Structured Basis, Data-flow, good data
     @Test
     public void testSmallSize(){
         assertEquals(9, smallMaze.size());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testLargeSize(){
         assertEquals(25, largeMaze.size());
     }
 
+    //Small case, Structured Basis, Data-flow, good data, compound boundaries
     @Test
     public void testSmallPillarConstruction(){
         for (int i = 0; i < smallMaze.length(); i++) {
@@ -86,6 +89,7 @@ public class MazeTest {
 
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testLargePillarConstruction(){
         for (int i = 0; i < largeMaze.length(); i++) {
@@ -95,6 +99,7 @@ public class MazeTest {
         }
     }
 
+    //Small case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testSmallPillarNeighbors(){
         //test pillar at (0,0)
@@ -167,13 +172,14 @@ public class MazeTest {
         assertTrue(pillarNeighbors.containsKey(new Pillar(2, 1)));
     }
 
-
+    //Small case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     (expected=Exception.class)
     public void testExceptionLinkPillars() throws Exception{
         smallMaze.linkPillars(null, null);
     }
 
+    //Small case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testLinkPillars(){
         try {
@@ -207,6 +213,7 @@ public class MazeTest {
         assertEquals(true, pillarNeighbors.get(new Pillar(1, 1)));
     }
 
+    //Small case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testNoLinkPillars(){
         try {
@@ -240,6 +247,7 @@ public class MazeTest {
         assertFalse(pillarNeighbors.containsKey(new Pillar(0, 0)));
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testPositionEquals(){
         assertEquals(Maze.position(0,0), Maze.position(0,0));
@@ -247,33 +255,39 @@ public class MazeTest {
         assertThat(Maze.position(0,0), not(Maze.position(0,1)));
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testSetBeginNotInMap(){
         smallMaze.setBegin(Maze.position(26, 23));
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testSetEndNotInMap(){
         smallMaze.setEnd(Maze.position(0, 23));
     }
 
+    //Nominal case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testNullPositionEquals(){
         assertFalse(Maze.position(0,0).equals(null));
     }
 
+    //Nominal case, Structured Basis, Data-flow, bad data, compound boundaries, boundary
     @Test
     public void testNotPositionInstanceEquals(){
         Pillar p = new Pillar(0,0);
         assertFalse(Maze.position(0,0).equals(p));
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testPositionHashCode(){
         pos = Maze.position(90, 23423);
         assertEquals(26213, pos.hashCode());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testPosition(){
         pos = Maze.position(25, 28);
@@ -281,6 +295,7 @@ public class MazeTest {
         assertEquals(pos, Maze.position(25, 28));
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGetHorizontalLeftPillar(){
         Pillar cornerPillar = largePillarMap.get(Maze.position(0,0));
@@ -293,6 +308,7 @@ public class MazeTest {
         assertEquals(null, neighbor);
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGetHorizontalRightPillar(){
         Pillar cornerPillar = largePillarMap.get(Maze.position(0,0));
@@ -305,6 +321,7 @@ public class MazeTest {
         assertEquals(3, neighbor.getY());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGetVerticalPillarAbove(){
         Pillar pillar = largePillarMap.get(Maze.position(0,0));
@@ -317,6 +334,7 @@ public class MazeTest {
         assertEquals(null, neighbor);
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data, compound boundaries, boundary
     @Test
     public void testGetVerticalPillarBelow(){
         Pillar pillar = largePillarMap.get(Maze.position(0,0));
@@ -370,6 +388,7 @@ public class MazeTest {
 //        assertEquals(4, pillarNeighbors.size());
 //    }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testGetAndSetBegin(){
         largeMaze.setBegin(Maze.position(0,0));
@@ -377,27 +396,32 @@ public class MazeTest {
         assertEquals(0, largeMaze.getBegin().getY());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testGetPillars(){
         largePillarMap = largeMaze.getPillars();
         assertEquals(25, largePillarMap.size());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testLength(){
         assertEquals(5, largeMaze.length());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testWidth(){
         assertEquals(5, largeMaze.width());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testSize(){
         assertEquals(25, largeMaze.size());
     }
 
+    //Nominal case, Structured Basis, Data-flow, good data
     @Test
     public void testGetAndSetEnd(){
         largeMaze.setBegin(Maze.position(4,4));
