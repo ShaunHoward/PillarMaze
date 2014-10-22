@@ -342,11 +342,8 @@ public class Maze {
          *
          * @return the map of pillars after construction
          */
-        public Map<Position, Pillar> testConstructPillars(int x, int y){
-            Maze maze = new Maze();
-            maze.setLength(x);
-            maze.setWidth(y);
-            maze.constructPillars();
+        public Map<Position, Pillar> testConstructPillars(Maze maze, int x, int y){
+            setUpMaze(maze, x, y);
             return maze.getPillars();
         }
 
@@ -355,12 +352,23 @@ public class Maze {
          *
          * @return the map of pillars after setting neighbors
          */
-        public Map<Position, Pillar> testSetNeighbors(int x, int y){
-            Maze maze = new Maze();
+        public Map<Position, Pillar> testSetNeighbors(Maze maze, int x, int y){
+            setUpMaze(maze, x, y);
+            return maze.getPillars();
+        }
+
+        /**
+         * Sets up the maze for the test class.
+         *
+         * @param maze - the maze to set up
+         * @param x - the maze length
+         * @param y - the maze width
+         */
+        public void setUpMaze(Maze maze, int x, int y){
+            maze = new Maze();
             maze.setLength(x);
             maze.setWidth(y);
             maze.constructPillars();
-            return maze.getPillars();
         }
     }
 
