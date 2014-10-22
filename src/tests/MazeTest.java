@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
  */
 public class MazeTest {
 
+    Maze.Position pos;
     Pillar pillar;
     Maze smallMaze;
     Maze largeMaze;
@@ -25,6 +26,7 @@ public class MazeTest {
 
     @Before
     public void setUp(){
+        pos = null;
         pillar = null;
         smallMaze = new Maze(3, 3);
         largeMaze = new Maze(5, 5);
@@ -211,6 +213,40 @@ public class MazeTest {
         assertEquals(Maze.position(0,0), Maze.position(0,0));
         assertNotEquals(Maze.position(1,0), Maze.position(0,0));
         assertNotEquals(Maze.position(0,0), Maze.position(0,1));
+    }
+
+    @Test
+    public void testSetBeginNotInMap(){
+        smallMaze.setBegin(Maze.position(26, 23));
+    }
+
+    @Test
+    public void testSetEndNotInMap(){
+        smallMaze.setEnd(Maze.position(0, 23));
+    }
+
+    @Test
+    public void testNullPositionEquals(){
+        assertFalse(Maze.position(0,0).equals(null));
+    }
+
+    @Test
+    public void testNotPositionInstanceEquals(){
+        Pillar p = new Pillar(0,0);
+        assertFalse(Maze.position(0,0).equals(p));
+    }
+
+    @Test
+    public void testPositionHashCode(){
+        pos = Maze.position(90, 23423);
+        assertEquals(26213, pos.hashCode());
+    }
+
+    @Test
+    public void testPosition(){
+        pos = Maze.position(25,28);
+        assertEquals(Maze.Position.class, pos.getClass());
+        assertEquals(pos, Maze.position(25, 28));
     }
 
 }
