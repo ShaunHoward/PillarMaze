@@ -583,7 +583,7 @@ public class MazeSolverTest {
     @Test
     public void testInitializeSearch() {
         try {
-            smallMaze.setBegin(Maze.position(1, 1));
+        smallMaze.setBegin(Maze.position(1, 1));
             initSearch.invoke(solver.getClass(), smallMaze, testESet, testNQueue);
         } catch (Exception e) {
             fail("Unexpectedly could not invoke initializeSearch().");

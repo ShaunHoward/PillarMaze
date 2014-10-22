@@ -5,6 +5,7 @@ import maze.Pillar;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -277,8 +278,66 @@ public class MazeTest {
     }
 
     @Test
-    public void testConstructPillars(){
-       //invoke constructPillars()
+    public void testGetHorizontalLeftPillar(){
+        Pillar cornerPillar = largePillarMap.get(Maze.position(0,0));
+        Pillar edgePillar = largePillarMap.get(Maze.position(4,3));
+        Pillar neighbor = largeMaze.getHorizontalPillar(cornerPillar, true);
+        assertEquals(1, neighbor.getX());
+        assertEquals(0, neighbor.getY());
+
+        neighbor = largeMaze.getHorizontalPillar(edgePillar, true);
+        assertEquals(null, neighbor);
+    }
+
+    @Test
+    public void testGetHorizontalRightPillar(){
+        Pillar cornerPillar = largePillarMap.get(Maze.position(0,0));
+        Pillar surroundedPillar = largePillarMap.get(Maze.position(3,3));
+        Pillar neighbor = largeMaze.getHorizontalPillar(cornerPillar, false);
+        assertEquals(null, neighbor);
+
+        neighbor = largeMaze.getHorizontalPillar(surroundedPillar, false);
+        assertEquals(2, neighbor.getX());
+        assertEquals(3, neighbor.getY());
+    }
+
+    @Test
+    public void testGetVerticalUpPillar(){
+        Pillar pillar = largePillarMap.get(Maze.position(0,0));
+        Pillar neighbor = largeMaze.getHorizontalPillar(pillar, false);
+        assertEquals(null, neighbor);
+    }
+
+    @Test
+    public void testZeroConstructPillars(){
+        //invoke constructPillars()
+        Maze testMaze = new Maze();
+        Maze.Test mazeTestObject = testMaze.new Test();
+        assertEquals(0,mazeTestObject.testConstructPillars(0,0).size());
+    }
+
+    @Test
+    public void testOneConstructPillars(){
+        //invoke constructPillars()
+        Maze testMaze = new Maze();
+        Maze.Test mazeTestObject = testMaze.new Test();
+        assertEquals(1,mazeTestObject.testConstructPillars(1,1).size());
+    }
+
+    @Test
+    public void testNominalConstructPillars(){
+        //invoke constructPillars()
+        Maze testMaze = new Maze();
+        Maze.Test mazeTestObject = testMaze.new Test();
+        assertEquals(25,mazeTestObject.testConstructPillars(5,5).size());
+    }
+
+    @Test
+    public void testLargeConstructPillars(){
+        //invoke constructPillars()
+        Maze testMaze = new Maze();
+        Maze.Test mazeTestObject = testMaze.new Test();
+        assertEquals(100,mazeTestObject.testConstructPillars(10,10).size());
     }
 
     @Test

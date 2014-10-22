@@ -53,6 +53,31 @@ public class Maze {
     }
 
     /**
+     * Empty constructor for Maze.
+     */
+    public Maze(){
+
+    }
+
+    /**
+     * Sets the length of the maze.
+     *
+     * @param length - the length of the maze
+     */
+    public void setLength(int length){
+        this.length = length;
+    }
+
+    /**
+     * Sets the width of the maze.
+     *
+     * @param width - the width of the maze
+     */
+    public void setWidth(int width){
+        this.width = width;
+    }
+
+    /**
      * Constructs the pillars for the maze
      * across the grid of size length x width.
      * Each pillar has it's own grid coordinates
@@ -304,6 +329,38 @@ public class Maze {
             int result = x;
             result = 31 * result + y;
             return result;
+        }
+    }
+
+    /**
+     * Tests the Maze class protected methods.
+     */
+    public class Test{
+
+        /**
+         * Method to test construction of pillars.
+         *
+         * @return the map of pillars after construction
+         */
+        public Map<Position, Pillar> testConstructPillars(int x, int y){
+            Maze maze = new Maze();
+            maze.setLength(x);
+            maze.setWidth(y);
+            maze.constructPillars();
+            return maze.getPillars();
+        }
+
+        /**
+         * Method to test setting of neighbors.
+         *
+         * @return the map of pillars after setting neighbors
+         */
+        public Map<Position, Pillar> testSetNeighbors(int x, int y){
+            Maze maze = new Maze();
+            maze.setLength(x);
+            maze.setWidth(y);
+            maze.constructPillars();
+            return maze.getPillars();
         }
     }
 
