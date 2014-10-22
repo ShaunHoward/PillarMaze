@@ -40,7 +40,7 @@
 
         <!-- You can build from multiple directories, in this case, a folder for tests -->
 		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src/tests"/> <!-- Where the tests' source code is -->
+            <src path="src/tests/"/> <!-- Where the tests' source code is -->
 			<classpath refid="JUnit4.libraryclasspath"/>
             <classpath refid="PillarMaze.classpath"/>
         </javac>
