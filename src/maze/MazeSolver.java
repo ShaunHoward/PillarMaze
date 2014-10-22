@@ -234,4 +234,39 @@ public class MazeSolver {
         /* return the manhattan distance */
         return manhattan;
     }
+
+    /**
+     * Tests the MazeSolver class protected methods.
+     */
+    public class Test{
+
+        /**
+         * Attempts to link the currently visited pillar, v, with unconnected pillars
+         * that are its neighbors. These newly connected pillars are added to the set
+         * of explored pillars, E, and the priority queue of new pillars, N.
+         *
+         * @param v   - the currently visited pillar
+         * @param end - the end pillar of the maze
+         * @param E   - the set of explored pillars
+         * @param N   - the priority queue of new pillars
+         * @throws Exception - thrown when the end pillar is null
+         */
+        public void testAttemptLinks(Pillar v, Pillar end, Set<Pillar> E, PriorityQueue<Pillar> N) throws Exception {
+            attemptLinks(v, end, E, N);
+        }
+
+        /**
+         * Initializes the P* search algorithm by getting the beginning pillar of the maze
+         * and adding it to the set of explored pillars, then adding it the the priority queue
+         * of new pillars and initializing it's values.
+         *
+         * @param maze - the maze to search
+         * @param E    - the set of explored pillars
+         * @param N    - the priority queue of new pillars
+         * @throws Exception - thrown when the maze does not have a beginning pillar
+         */
+        public void testInitializeSearch(Maze maze, Set<Pillar> E, PriorityQueue<Pillar> N) throws Exception {
+            initializeSearch(maze, E, N);
+        }
+    }
 }

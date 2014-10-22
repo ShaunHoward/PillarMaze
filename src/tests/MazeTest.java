@@ -329,46 +329,79 @@ public class MazeTest {
         assertEquals(3, neighbor.getY());
     }
 
+//    @Test
+//    public void testZeroConstructPillars(){
+//        assertEquals(0,mazeTestObject.testConstructPillars(testMaze,0,0).size());
+//    }
+//
+//    @Test
+//    public void testOneConstructPillars(){
+//        assertEquals(1,mazeTestObject.testConstructPillars(testMaze,1,1).size());
+//    }
+//
+//    @Test
+//    public void testNominalConstructPillars(){
+//        assertEquals(25,mazeTestObject.testConstructPillars(testMaze,5,5).size());
+//    }
+//
+//    @Test
+//    public void testLargeConstructPillars(){
+//        assertEquals(100,mazeTestObject.testConstructPillars(testMaze,10,10).size());
+//    }
+//
+//    @Test
+//    public void testSetNeighborsAtEdge(){
+//        largePillarMap = mazeTestObject.testSetNeighbors(testMaze,10, 10);
+//        pillarNeighbors = largePillarMap.get(Maze.position(0,0)).getNeighbors();
+//        assertEquals(2, pillarNeighbors.size());
+//        pillarNeighbors = largePillarMap.get(Maze.position(0,9)).getNeighbors();
+//        assertEquals(2, pillarNeighbors.size());
+//        pillarNeighbors = largePillarMap.get(Maze.position(9,9)).getNeighbors();
+//        assertEquals(2, pillarNeighbors.size());
+//        pillarNeighbors = largePillarMap.get(Maze.position(9,0)).getNeighbors();
+//        assertEquals(2, pillarNeighbors.size());
+//    }
+//
+//    @Test
+//    public void testSetNeighborsInMiddle() {
+//        mazeTestObject.testSetNeighbors(testMaze,10, 10);
+//        largePillarMap = testMaze.getPillars();
+//        pillarNeighbors = largePillarMap.get(Maze.position(3, 4)).getNeighbors();
+//        assertEquals(4, pillarNeighbors.size());
+//    }
+
     @Test
-    public void testZeroConstructPillars(){
-        assertEquals(0,mazeTestObject.testConstructPillars(testMaze,0,0).size());
+    public void testGetAndSetBegin(){
+        largeMaze.setBegin(Maze.position(0,0));
+        assertEquals(0, largeMaze.getBegin().getX());
+        assertEquals(0, largeMaze.getBegin().getY());
     }
 
     @Test
-    public void testOneConstructPillars(){
-        assertEquals(1,mazeTestObject.testConstructPillars(testMaze,1,1).size());
+    public void testGetPillars(){
+        largePillarMap = largeMaze.getPillars();
+        assertEquals(25, largePillarMap.size());
     }
 
     @Test
-    public void testNominalConstructPillars(){
-        assertEquals(25,mazeTestObject.testConstructPillars(testMaze,5,5).size());
+    public void testLength(){
+        assertEquals(5, largeMaze.length());
     }
 
     @Test
-    public void testLargeConstructPillars(){
-        assertEquals(100,mazeTestObject.testConstructPillars(testMaze,10,10).size());
+    public void testWidth(){
+        assertEquals(5, largeMaze.width());
     }
 
     @Test
-    public void testSetNeighborsAtEdge(){
-        largePillarMap = mazeTestObject.testSetNeighbors(testMaze,10, 10);
-        pillarNeighbors = largePillarMap.get(Maze.position(0,0)).getNeighbors();
-        assertEquals(2, pillarNeighbors.size());
-        pillarNeighbors = largePillarMap.get(Maze.position(0,9)).getNeighbors();
-        assertEquals(2, pillarNeighbors.size());
-        pillarNeighbors = largePillarMap.get(Maze.position(9,9)).getNeighbors();
-        assertEquals(2, pillarNeighbors.size());
-        pillarNeighbors = largePillarMap.get(Maze.position(9,0)).getNeighbors();
-        assertEquals(2, pillarNeighbors.size());
+    public void testSize(){
+        assertEquals(25, largeMaze.size());
     }
 
     @Test
-    public void testSetNeighborsInMiddle() {
-        mazeTestObject.testSetNeighbors(testMaze,10, 10);
-        largePillarMap = testMaze.getPillars();
-        pillarNeighbors = largePillarMap.get(Maze.position(3, 4)).getNeighbors();
-        assertEquals(4, pillarNeighbors.size());
+    public void testGetAndSetEnd(){
+        largeMaze.setBegin(Maze.position(4,4));
+        assertEquals(4, largeMaze.getBegin().getX());
+        assertEquals(4, largeMaze.getBegin().getY());
     }
-
-    @
 }
