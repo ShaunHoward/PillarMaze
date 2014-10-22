@@ -19,18 +19,86 @@ import static org.junit.Assert.fail;
  */
 public class MazeSolverTest {
 
+    Maze zeroPillarMaze;
+    Maze onePillarMaze;
     Maze smallMaze;
     Maze largeMaze;
+    Maze rectangleMaze;
+
     List<Pillar> shortestPath;
 
     @Before
-    public void setUp(){
+    public void setUp() {
+        zeroPillarMaze = new Maze(0, 0);
+        onePillarMaze = new Maze(1, 1);
         smallMaze = new Maze(3, 3);
         largeMaze = new Maze(5, 5);
+        rectangleMaze = new Maze(4, 6);
+    }
+
+    @Test(expected = Exception.class)
+    public void testZeroPillarMaze() throws Exception {
+        shortestPath = MazeSolver.pStar(zeroPillarMaze, 0);
+    }
+
+    @Test(expected = Exception.class)
+    public void testOnePillarMaze() throws Exception {
+        shortestPath = MazeSolver.pStar(onePillarMaze, 1);
+    }
+
+    @Test(expected=Exception.class)
+    public void testMazeSizeMismatch() throws Exception {
+        shortestPath = MazeSolver.pStar(smallMaze, 20);
+    }
+
+    @Test(expected = Exception.class)
+    public void testMazeWithoutBeginning() throws Exception {
+        //link row 1
+        smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+        smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+        smallMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+        //link row 2
+        smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+
+        //link row 3
+        smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
+        smallMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+        //set end
+        smallMaze.setEnd(Maze.position(2, 2));
+        shortestPath = MazeSolver.pStar(smallMaze, 9);
     }
 
     @Test
-    public void testGivenMaze(){
+    public void testMazeWithoutEnd() {
+        try {
+            //link row 1
+            smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            smallMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
+
+            //link row 2
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+
+            //link row 3
+            smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
+            smallMaze.linkPillars(Maze.position(1, 2), Maze.position(2, 2));
+
+            //set beginning and end
+            smallMaze.setBegin(Maze.position(1, 1));
+            shortestPath = MazeSolver.pStar(smallMaze, 9);
+
+            assertEquals(null, shortestPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void testGivenMaze() {
         try {
             //link row 1
             largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -84,7 +152,49 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void testTraverseOnlyWithPlankMaze(){
+    public void testPathAlongBorder(){
+        try {
+            //link row 1
+            largeMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
+            largeMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
+            largeMaze.linkPillars(Maze.position(2, 0), Maze.position(3, 0));
+            largeMaze.linkPillars(Maze.position(3, 0), Maze.position(4, 0));
+            largeMaze.linkPillars(Maze.position(4, 0), Maze.position(4, 1));
+
+            //link row 2
+            largeMaze.linkPillars(Maze.position(4, 1), Maze.position(4, 2));
+
+            //link row 3
+            largeMaze.linkPillars(Maze.position(4, 2), Maze.position(4, 3));
+
+            //link row 4
+            largeMaze.linkPillars(Maze.position(4, 3), Maze.position(4, 4));
+
+            //set beginning and end
+            largeMaze.setBegin(Maze.position(0, 0));
+            largeMaze.setEnd(Maze.position(4, 4));
+            shortestPath = MazeSolver.pStar(largeMaze, 25);
+
+            assertEquals("<0, 0>", shortestPath.get(0).getCoordinateString());
+            assertEquals("<1, 0>", shortestPath.get(1).getCoordinateString());
+            assertEquals("<2, 0>", shortestPath.get(2).getCoordinateString());
+            assertEquals("<3, 0>", shortestPath.get(3).getCoordinateString());
+            assertEquals("<4, 0>", shortestPath.get(4).getCoordinateString());
+            assertEquals("<4, 1>", shortestPath.get(5).getCoordinateString());
+            assertEquals("<4, 2>", shortestPath.get(6).getCoordinateString());
+            assertEquals("<4, 3>", shortestPath.get(7).getCoordinateString());
+            assertEquals("<4, 4>", shortestPath.get(8).getCoordinateString());
+
+            assertEquals(9, shortestPath.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception was thrown while linking pillars.");
+        }
+    }
+
+    @Test
+    public void testTraverseOnlyWithPlankMaze() {
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -112,7 +222,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void testImpossibleTraversalMaze(){
+    public void testImpossibleTraversalMaze() {
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -136,7 +246,7 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void testNoBenefitFromPlankMaze(){
+    public void testNoBenefitFromPlankMaze() {
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
@@ -145,8 +255,8 @@ public class MazeSolverTest {
             smallMaze.linkPillars(Maze.position(1, 0), Maze.position(1, 1));
 
             //link row 2
-            smallMaze.linkPillars(Maze.position(0, 1), Maze.position(0,2));
-            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2,1));
+            smallMaze.linkPillars(Maze.position(0, 1), Maze.position(0, 2));
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
 
             //link row 3
             smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
@@ -166,16 +276,16 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void testMultiplePlankPositionsMaze(){
+    public void testMultiplePlankPositionsMaze() {
         try {
             //link row 1
             smallMaze.linkPillars(Maze.position(0, 0), Maze.position(1, 0));
             smallMaze.linkPillars(Maze.position(1, 0), Maze.position(2, 0));
 
             //link row 2
-            smallMaze.linkPillars(Maze.position(0, 1), Maze.position(0,2));
-            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2,1));
-            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(1,2));
+            smallMaze.linkPillars(Maze.position(0, 1), Maze.position(0, 2));
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(2, 1));
+            smallMaze.linkPillars(Maze.position(1, 1), Maze.position(1, 2));
 
             //link row 3
             smallMaze.linkPillars(Maze.position(0, 2), Maze.position(1, 2));
@@ -195,9 +305,9 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void testShortestPath(){
-        Pillar p = new Pillar(0,0);
-        Pillar q = new Pillar(0,1);
+    public void testShortestPath() {
+        Pillar p = new Pillar(0, 0);
+        Pillar q = new Pillar(0, 1);
         q.setPrevious(p);
         List<Pillar> path = MazeSolver.shortestPath(q);
         assertEquals(2, path.size());
@@ -206,11 +316,15 @@ public class MazeSolverTest {
     }
 
     @Test
-    public void testDistanceToEnd(){
+    public void testDistanceToEnd() {
         //set beginning and end
         smallMaze.setBegin(Maze.position(0, 0));
         smallMaze.setEnd(Maze.position(2, 2));
         Map<Maze.Position, Pillar> smallMap = smallMaze.getPillars();
-        assertEquals(4, MazeSolver.distanceToEnd(smallMap.get(Maze.position(0,0)), smallMap.get(Maze.position(2,2))), .01);
+        try {
+            assertEquals(4, MazeSolver.distanceToEnd(smallMap.get(Maze.position(0, 0)), smallMap.get(Maze.position(2, 2))), .01);
+        } catch (Exception e) {
+            fail("Unexpectedly failed to get the distance to the end of the maze.");
+        }
     }
 }

@@ -105,8 +105,12 @@ public class MazeSolver {
      * @param maze - the maze to search
      * @param E - the set of explored pillars
      * @param N - the priority queue of new pillars
+     * @throws Exception - thrown when the maze does not have a beginning pillar
      */
-    static void initializeSearch(Maze maze, Set<Pillar> E, PriorityQueue<Pillar> N) {
+    static void initializeSearch(Maze maze, Set<Pillar> E, PriorityQueue<Pillar> N) throws Exception {
+
+        /* make sure maze has a beginning node */
+        MazeUtilities.throwExceptionWhenNull(maze.getBegin());
 
         /* if maze size is greater than 0 */
         if (maze.size > 0) {
@@ -135,8 +139,9 @@ public class MazeSolver {
      * @param end - the end pillar of the maze
      * @param E - the set of explored pillars
      * @param N - the priority queue of new pillars
+     * @throws Exception - thrown when the end pillar is null
      */
-    static void attemptLinks(Pillar v, Pillar end, Set<Pillar> E, PriorityQueue<Pillar> N) {
+    static void attemptLinks(Pillar v, Pillar end, Set<Pillar> E, PriorityQueue<Pillar> N) throws Exception {
         /* if v.n > 0 */
         if (v.getPlanksLeft() > 0) {
 
@@ -217,15 +222,20 @@ public class MazeSolver {
      * end of the maze
      */
     public static float distanceToEnd(Pillar current, Pillar end) {
+        /* initialize manhattan distance to infinity. */
+        float manhattan = Float.POSITIVE_INFINITY;
+
         /* call the current node 'c' */
         Pillar c = current;
 
         /* find the end node of the grid 'e' */
         Pillar e = end;
 
-        /* add the absolute values of (e.x - c.x) and (e.y - c.y) and call this 'manhattan' */
-        int manhattan = Math.abs(e.getX() - c.getX()) + Math.abs(e.getY() - c.getY());
-
+        /* only get manhattan distance when pillars are not null */
+        if (!MazeUtilities.isNull(c, e)) {
+            /* add the absolute values of (e.x - c.x) and (e.y - c.y) and call this 'manhattan' */
+            manhattan = Math.abs(e.getX() - c.getX()) + Math.abs(e.getY() - c.getY());
+        }
         /* return the manhattan distance */
         return manhattan;
     }
