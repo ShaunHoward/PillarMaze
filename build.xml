@@ -1,61 +1,54 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Defines the project. basedir is where the base directory of the project is, default is the target that gets used when none are specified, and name is the name of the project. -->
-<project basedir="." default="build" name="PillarMaze">
-	<property environment="env"/>
-	<!-- The below property tags create variables to be used later. -->
-	<property name="junit.output.dir" value="junit"/>
-	<property name="debuglevel" value="source,lines,vars"/>
-	<property name="target" value="1.7"/>
-	<property name="source" value="1.7"/>
-	<property name="src" location="./src"/>
-	<property name="bin" location="./bin"/>
-
-	
-	<path id="JUnit4.libraryclasspath"> <!-- Path information for JUnit jars -->
-		<!-- These locations assume that your JUnit jars are in the same directory as your project. Change them to match where you keep yours. -->
-        <pathelement location="${env.ANT_HOME}/lib/junit.jar"/>
-        <pathelement location="${env.ANT_HOME}/lib/hamcrest.core-1.3.jar"/><!-- Change this if your JUnit is a different version. -->
-	</path>
-
-	<path id="PillarMaze.classpath"> <!-- Path information for the project's compiled classes -->
-		<pathelement location="bin"/> <!-- Where compiled code goes -->
-		<path refid="JUnit4.libraryclasspath"/> <!-- Includes the JUnit path information in this path -->
-	</path>
-
-	<!-- The parts of these target tags are the commands that get run when those targets are used. -->
-	<target name="clean">
-		<!-- This clears out the bin folder. -->
-		<delete dir="bin"/>
-	</target>
-
-	<target name="build">
-		<mkdir dir="./bin"/>
-		<echo message="${ant.project.name}: ${ant.file}"/> <!-- These variables are filled in by Ant; the former comes from the name field in the project tag, the latter, from the file it's operating on. -->
-		<!-- Builds the main portion of the project -->
-		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src/maze/"/> <!-- Where the source code is -->
-			<classpath refid="JUnit4.libraryclasspath"/> <!-- Imports JUnit so we can compile JUnit test cases -->
-            <classpath refid="PillarMaze.classpath"/> 
+<?xml version="1.0"?>
+<project name="PillarMaze" default="main"
+         basedir=".."> <!-- Sets variables which can later be used. --> <!-- The value of a property is accessed via ${} -->
+    <property name="src.dir" location="PillarMaze/src/maze"/>
+    <property name="test.dir" location="PillarMaze/src/tests"/>
+    <property name="build.dir" location="bin"/>
+    <property name="build.test.dir" location="bin/tests"/>
+    <!-- Variables used for JUnit testin -->
+    <property name="test.report.dir" location="testreport"/>
+    <!-- Define the classpath which includes the junit.jar and the classes after compiling-->
+    <path id="junit.class.path">
+        <pathelement location="PillarMaze/junit.jar"/>
+        <pathelement location="PillarMaze/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+        <pathelement location="${build.dir}"/>
+    </path>
+    <!-- Deletes the existing build, docs and dist directory-->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${test.report.dir}"/>
+    </target>
+    <!-- Creates the build, docs and dist directory-->
+    <target name="makedir">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.test.dir}"/>
+        <mkdir dir="${test.report.dir}"/>
+    </target>
+    <!-- Compiles the java code (including the usage of library for JUnit -->
+    <target name="compile" depends="clean, makedir">
+        <javac srcdir="${src.dir}" destdir="${build.dir}">
+            <classpath refid="junit.class.path"/>
         </javac>
-
-        <!-- You can build from multiple directories, in this case, a folder for tests -->
-		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src/tests/"/> <!-- Where the tests' source code is -->
-			<classpath refid="JUnit4.libraryclasspath"/>
-            <classpath refid="PillarMaze.classpath"/>
+        <javac srcdir="${test.dir}" destdir="${build.test.dir}">
+            <classpath refid="junit.class.path"/>
         </javac>
     </target>
-
-	<target name="test" depends="build"> <!-- Builds the code via the depends feature, and then runs tests -->
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr"> <!-- Runs the tests as a forked process -->
-            <formatter type="plain"/>
-            <batchtest>
-       			<fileset dir="./bin/">
-            		<include name="**/*Test.class" /> <!-- Tells it to use any file in any subfolder of the project, so long as that file's name ends in Test.class -->
-       			</fileset>
-    		</batchtest>
-            <classpath refid="PillarMaze.classpath"/>
+    <!-- Run the JUnit Tests --> <!-- Output is XML, could also be plain-->
+    <target name="junit" depends="compile">
+        <junit printsummary="on" fork="true" haltonfailure="yes">
+            <classpath refid="junit.class.path"/>
+            <classpath>
+                <pathelement location="${build.test.dir}"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest todir="${test.report.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
         </junit>
+    </target>
+    <target name="main" depends="compile, junit">
+        <description>Main target</description>
     </target>
 </project>

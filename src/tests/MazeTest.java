@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 /**
@@ -19,6 +20,7 @@ import static org.junit.Assert.*;
  */
 public class MazeTest {
 
+    Class[] emptyParams = new Class[0];
     Maze maze;
     Maze.Position pos;
     Pillar pillar;
@@ -43,7 +45,7 @@ public class MazeTest {
 
         // Gather constructPillars() method
         try {
-            constructPillars = maze.getClass().getDeclaredMethod("constructPillars", null);
+            constructPillars = maze.getClass().getDeclaredMethod("constructPillars",emptyParams);
             constructPillars.setAccessible(true);
         } catch (NoSuchMethodException e) {
             fail("Unable to find constructPillars() method declaration.");
@@ -51,7 +53,7 @@ public class MazeTest {
 
         // Gather setNeighbors() method
         try {
-            setNeighbors = maze.getClass().getDeclaredMethod("setNeighbors", null);
+            setNeighbors = maze.getClass().getDeclaredMethod("setNeighbors", emptyParams);
             setNeighbors.setAccessible(true);
         } catch (NoSuchMethodException e) {
             fail("Unable to find setNeighbors() method declaration.");
@@ -236,8 +238,8 @@ public class MazeTest {
     @Test
     public void testPositionEquals(){
         assertEquals(Maze.position(0,0), Maze.position(0,0));
-        assertNotEquals(Maze.position(1,0), Maze.position(0,0));
-        assertNotEquals(Maze.position(0,0), Maze.position(0,1));
+        assertThat(Maze.position(1, 0), not(Maze.position(0, 0)));
+        assertThat(Maze.position(0,0), not(Maze.position(0,1)));
     }
 
     @Test
