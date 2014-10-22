@@ -3,17 +3,17 @@ package maze;
 import java.util.*;
 
 /**
- *  A node represents a pillar in a pillar grid.
- *  The node consists of the previously visited node p,
- *  the distance from the beginning node b,
- *  the heuristic distance to the ending node e,
- *  the cost of this node which is the sum of b and e,
- *  the number of planks left at this node,
- *  the x and y coordinates of this node in the maze grid,
- *  whether the node is the beginning or end, and a map of neighbors with
- *  neighbors as key and a connected Boolean as the value.
+ * A node represents a pillar in a pillar grid.
+ * The node consists of the previously visited node p,
+ * the distance from the beginning node b,
+ * the heuristic distance to the ending node e,
+ * the cost of this node which is the sum of b and e,
+ * the number of planks left at this node,
+ * the x and y coordinates of this node in the maze grid,
+ * whether the node is the beginning or end, and a map of neighbors with
+ * neighbors as key and a connected Boolean as the value.
  *
- *  @author Shaun Howard
+ * @author Shaun Howard
  */
 public class Pillar implements Comparable<Pillar> {
 
@@ -174,16 +174,16 @@ public class Pillar implements Comparable<Pillar> {
      * @param connected - whether to get connected neighbors
      * @return connected or disconnected neighbors of this pillar
      */
-    public List<Pillar> getNeighborList(boolean connected){
+    public List<Pillar> getNeighborList(boolean connected) {
         // The list of neighbors of this pillar.
         List<Pillar> neighborList = new ArrayList<>(neighbors.keySet());
         Iterator<Pillar> listItr = neighborList.iterator();
         Pillar curr = null;
 
         // Remove any neighbors not matching connected boolean in map.
-        while (listItr.hasNext()){
+        while (listItr.hasNext()) {
             curr = listItr.next();
-            if (neighbors.containsKey(curr) && neighbors.get(curr).booleanValue() != connected){
+            if (neighbors.containsKey(curr) && neighbors.get(curr).booleanValue() != connected) {
                 listItr.remove();
             }
         }
@@ -193,7 +193,7 @@ public class Pillar implements Comparable<Pillar> {
     /**
      * Adds a neighbor pillar to this pillar.
      *
-     * @param neighbor - the neighbor pillar to add
+     * @param neighbor    - the neighbor pillar to add
      * @param isConnected - whether the neighbor is connected
      */
     public void addNeighbor(Pillar neighbor, boolean isConnected) {
@@ -217,11 +217,11 @@ public class Pillar implements Comparable<Pillar> {
     }
 
     /**
-     * Gets the coordinates of this pillar.
+     * Gets the coordinates of this pillar as a string.
      *
-     * @return - the coordinates <x,y></x,y> of this pillar
+     * @return - the coordinates <x,y></x,y> of this pillar as a string
      */
-    public String getCoordinates(){
+    public String getCoordinateString() {
         return "<" + getX() + ", " + getY() + ">";
     }
 
@@ -232,7 +232,7 @@ public class Pillar implements Comparable<Pillar> {
      * @param pillar - the pillar to compare with this pillar
      * @return whether the the pillars are the same
      */
-    boolean samePillars(Pillar pillar){
+    boolean samePillars(Pillar pillar) {
         if (this.getX() == pillar.getX()
                 && this.getY() == pillar.getY()
                 && this.getCost() == pillar.getCost()) {
@@ -249,11 +249,11 @@ public class Pillar implements Comparable<Pillar> {
      * @return whether the input object is equivalent to this pillar
      */
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
 
         if (!MazeUtilities.isNull(o) && o instanceof Pillar) {
-            Pillar p = (Pillar)o;
-            if (samePillars(p)){
+            Pillar p = (Pillar) o;
+            if (samePillars(p)) {
                 return true;
             }
         }
@@ -267,7 +267,10 @@ public class Pillar implements Comparable<Pillar> {
      * @return the hash code of this pillar
      */
     @Override
-    public int hashCode(){
-        return (x * 23 + y * 55 + (int)c * 3) % 23;
+    public int hashCode() {
+        int result = (c != +0.0f ? Float.floatToIntBits(c) : 0);
+        result = 31 * result + x;
+        result = 31 * result + y;
+        return result;
     }
 }

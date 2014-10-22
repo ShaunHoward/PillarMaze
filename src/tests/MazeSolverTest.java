@@ -65,15 +65,15 @@ public class MazeSolverTest {
             largeMaze.setEnd(Maze.position(4, 4));
             shortestPath = MazeSolver.pStar(largeMaze, 25);
 
-            assertEquals("<0, 0>", shortestPath.get(0).getCoordinates());
-            assertEquals("<1, 0>", shortestPath.get(1).getCoordinates());
-            assertEquals("<1, 1>", shortestPath.get(2).getCoordinates());
-            assertEquals("<1, 2>", shortestPath.get(3).getCoordinates());
-            assertEquals("<1, 3>", shortestPath.get(4).getCoordinates());
-            assertEquals("<2, 3>", shortestPath.get(5).getCoordinates());
-            assertEquals("<2, 4>", shortestPath.get(6).getCoordinates());
-            assertEquals("<3, 4>", shortestPath.get(7).getCoordinates());
-            assertEquals("<4, 4>", shortestPath.get(8).getCoordinates());
+            assertEquals("<0, 0>", shortestPath.get(0).getCoordinateString());
+            assertEquals("<1, 0>", shortestPath.get(1).getCoordinateString());
+            assertEquals("<1, 1>", shortestPath.get(2).getCoordinateString());
+            assertEquals("<1, 2>", shortestPath.get(3).getCoordinateString());
+            assertEquals("<1, 3>", shortestPath.get(4).getCoordinateString());
+            assertEquals("<1, 4>", shortestPath.get(5).getCoordinateString());
+            assertEquals("<2, 4>", shortestPath.get(6).getCoordinateString());
+            assertEquals("<3, 4>", shortestPath.get(7).getCoordinateString());
+            assertEquals("<4, 4>", shortestPath.get(8).getCoordinateString());
 
             assertEquals(9, shortestPath.size());
 

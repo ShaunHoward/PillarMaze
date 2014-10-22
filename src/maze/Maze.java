@@ -57,11 +57,11 @@ public class Maze {
      * across the grid of size length x width.
      * Each pillar has it's own grid coordinates
      * as if it was on an inverted 2D graph.
-     *
+     * <p/>
      * The origin of the maze is at the bottom right
      * corner while the farthest distance is at the
      * top left corner.
-     *
+     * <p/>
      * From right to left, x coordinate increases.
      * From bottom to top, y coordinate increases.
      */
@@ -107,10 +107,10 @@ public class Maze {
      *
      * @param pillar - the pillar to find above or below the
      *               current pillar
-     * @param above - if this pillar is above the current pillar
+     * @param above  - if this pillar is above the current pillar
      * @return the pillar above or below the current pillar
      */
-    Pillar getVerticalPillar(Pillar pillar, boolean above){
+    Pillar getVerticalPillar(Pillar pillar, boolean above) {
         int x = pillar.getX();
         int y = pillar.getY();
         Pillar vertical = null;
@@ -129,10 +129,10 @@ public class Maze {
      *
      * @param pillar - the pillar to find left or right of the
      *               current pillar
-     * @param left - if this pillar is left of the current pillar
+     * @param left   - if this pillar is left of the current pillar
      * @return the pillar left or right of the current pillar
      */
-    Pillar getHorizontalPillar(Pillar pillar, boolean left){
+    Pillar getHorizontalPillar(Pillar pillar, boolean left) {
         int x = pillar.getX();
         int y = pillar.getY();
         Pillar horizontal = null;
@@ -179,7 +179,7 @@ public class Maze {
      *
      * @param begin - the beginning position of this maze
      */
-    public void setBegin(Position begin){
+    public void setBegin(Position begin) {
         if (pillars.containsKey(begin)) {
             this.begin = pillars.get(begin);
         }
@@ -199,7 +199,7 @@ public class Maze {
      *
      * @param end - the ending position of this maze
      */
-    public void setEnd(Position end){
+    public void setEnd(Position end) {
         if (pillars.containsKey(end)) {
             this.end = pillars.get(end);
         }
@@ -219,7 +219,7 @@ public class Maze {
      *
      * @return the size of this maze
      */
-    public int size(){
+    public int size() {
         return this.size;
     }
 
@@ -228,7 +228,7 @@ public class Maze {
      *
      * @return the length of the maze
      */
-    public int length(){
+    public int length() {
         return this.length;
     }
 
@@ -237,7 +237,7 @@ public class Maze {
      *
      * @return the width of the maze
      */
-    public int width(){
+    public int width() {
         return this.width;
     }
 
@@ -248,7 +248,7 @@ public class Maze {
      * @param y - the y position
      * @return a new position in this maze
      */
-    public static Position position(int x, int y){
+    public static Position position(int x, int y) {
         return new Position(x, y);
     }
 
@@ -301,7 +301,9 @@ public class Maze {
          */
         @Override
         public int hashCode() {
-            return (x * 23 + y * 55) % 23;
+            int result = x;
+            result = 31 * result + y;
+            return result;
         }
     }
 
